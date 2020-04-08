@@ -1,5 +1,6 @@
 # Playn'GO client developer task Budapest
-  Create a browser game with JavaScript or TypeScript, without using any third party game frameworks (i.e phaser, construct, rpg maker, unity). An exception to this is PixiJS, using it is recommended, but not mandatory. 
+
+Create a browser game with JavaScript or TypeScript, without using any third party game frameworks (i.e phaser, construct, rpg maker, unity). An exception to this is PixiJS, using it is recommended, but not mandatory. 
 
 ## Specification 
   - the game should work on most modern browsers on desktop 
@@ -20,4 +21,5 @@
     - if the projectile of the player's space ship hits an enemy, the enemy blows up and disappears, emitting particles - if the player's space ship collides with an enemy object, it blows up, and the game ends, going back to the main menu
     
   ## Scoring
-    The quality of the graphics is not counted towards the score. Additional score is awarded for using ES6+, TypeScript, or PixiJS. You can submit the task by uploading it to github/bitbucket, or by simply sending us the source by e-mail.
+
+  The quality of the graphics is not counted towards the score. Additional score is awarded for using ES6+, TypeScript, or PixiJS. You can submit the task by uploading it to github/bitbucket, or by simply sending us the source by e-mail.
