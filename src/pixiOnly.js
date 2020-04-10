@@ -7,7 +7,6 @@ export default () => {
   const pixiApplicationConfig = {  width: 800, height: 600 };
   const app = new Application(pixiApplicationConfig);
   root.appendChild(app.view);
-  console.log('--- pixijs simple scroll test ---')
  
   const loadAssets = (loader, resources) => {    
     const bg = new TilingSprite(resources['./images/nb-texture-1.png'].texture, 2048, 2048);
@@ -66,45 +65,61 @@ export default () => {
     const base = new Sprite();
     app.stage.addChild(base)
 
-    const rocket = add('rocket')
-    rocket.position.set(60,300)
-    rocket.scale.set(.4);
 
     const ship = add('manta')
     ship.position.set(50, 300)
     ship.scale.set(.4);
 
-    let fire = 0;
+    
 
-    const shoot = () => {
-      fire += 12;
-      rocket.position.x = fire + 70;
-      if (fire > 800) fire = 0;
-      requestAnimationFrame(shoot)
+    const shoot = side => {
+      const rocket = add('rocket')
+      rocket.position.set(ship.position.x, ship.position.y + side)
+      rocket.scale.set(.4);
+
+      const shoot = () => {
+        rocket.position.x += 12;
+        if (rocket.position.x > 800) {
+          rocket.destroy();
+          return;
+        };
+        requestAnimationFrame(shoot)
+      }
+      requestAnimationFrame(shoot) 
     }
-    requestAnimationFrame(shoot)
+
+    ship.interactive = true;
+    ship.buttonMode = true;
+
+    let side = 10;
+    const releaseRocket = () => {
+      side = side !== 10 ? 10: 70;
+      shoot(side)
+    }
+    
+    ship.on('pointerdown', releaseRocket);
+    
+    app.stage.interactive = true;
+
+    app.stage.on('mousemove', ({data:{global:{x, y}}}) => ship.position.set(x, y))
 
     
-    
+    const sKeys = Object.keys(sheet);
 
-    const enemyes = Object.keys(sheet).reduce(
-      (collect, mob, index) => ({...collect, [mob]: add(mob, 100 * index, 400 - (Math.random() * 200), .8, base) })
-    , {});
+    const enemyes = sKeys.map(
+      mob => add(mob, 100 * (Math.random() * sKeys.length), 400 - (Math.random() * 200), .8, base)
+    );
 
-    let ep = 0;
+    let ep = 1000;
     const enemyMoves = () => {
       ep -= 7;
       base.position.x = ep;
-      if (ep < -4500) ep = 0;
+      if (ep < -7500) ep = 1000;
       requestAnimationFrame(enemyMoves)
     }
     requestAnimationFrame(enemyMoves)
-  
 
   };
-  
-  
-
 }
 
 
