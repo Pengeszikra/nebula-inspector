@@ -1,29 +1,30 @@
-import {Application, utils, Sprite} from "pixi.js";
+import {Application, utils, Sprite, TilingSprite} from "pixi.js";
 import addSprite from "./addSprite";
 
 export default () => {
   utils.skipHello();  
   const root = document.getElementById('root');
-  console.log(root)
   const pixiApplicationConfig = {  width: 800, height: 600 };
   const app = new Application(pixiApplicationConfig);
   root.appendChild(app.view);
   console.log('--- pixijs simple scroll test ---')
  
   const loadAssets = (loader, resources) => {    
-    // console.log(resources);
+    const bg = new TilingSprite(resources['./images/nb-texture-1.png'].texture, 2048, 2048);
+    app.stage.addChild(bg);
+
     const layer1 = addSprite(app, resources)('./images/twin-moons.png', 0, 0);        
-    const layer2 = addSprite(app, resources)('./images/gun-pod.png', 0, 0);    
-    const ships = addSprite(app, resources)('./images/eeve-render.png', 0, 0);            
+    // const ships = addSprite(app, resources)('./images/nbi-sprite-sheet.png', 0, 0);            
+
     layer1.scale.set(.9);
-    layer2.scale.set(.8);
-    ships.scale.set(.5);
-    let xp = 0, xp2 = 0, xp3 = 0;    
+    // ships.scale.set(.5);
+    let xp = 0, xp2 = 0, xp3 = 0, bp=0;    
     const speed = 5;
     const scroll = () => {
       layer1.position.set(xp + 1000, 0);
-      layer2.position.set(xp2 + 1400, 0);
-      ships.position.set(xp3 + 1200, -500);
+      // ships.position.set(xp3 + 1200, 0);
+      bg.tilePosition.set(bp, 0);
+      bp -= speed * .4;
       xp -= speed;
       xp2 -= speed * 1.3;
       xp3 -= speed * 1.7
@@ -33,11 +34,77 @@ export default () => {
       requestAnimationFrame( scroll );
     }
     requestAnimationFrame( scroll );
+
+    loadSheet(resources);
   }
 
   app.loader.add([
     './images/twin-moons.png',
     './images/gun-pod.png',
-    './images/eeve-render.png',
-  ]).load(loadAssets);
+    './images/nbi-sprite-sheet.png',
+    './images/nb-texture-1.png',   
+  ])
+  .add('nbi','./images/nbi-sprite-sheet-1.json')
+  .load(loadAssets);
+  
+  const loadSheet = resource => {
+    const sheet = Object.keys(resource.nbi.textures).reduce(
+      (collect, key) => ({...collect, [key]: resource.nbi.textures[key]})
+    , {});
+
+    const add = (name, x = 0, y = 0, scale = 1, parent = app.stage) => {
+      const mob = new Sprite(sheet[name]);
+      parent.addChild(mob);
+      mob.position.set(x, y)
+      mob.scale.set(scale);
+      return mob;
+    }
+    
+    const title = add('nebula-inspector')
+    title.position.set(100,50)
+
+    const base = new Sprite();
+    app.stage.addChild(base)
+
+    const rocket = add('rocket')
+    rocket.position.set(60,300)
+    rocket.scale.set(.4);
+
+    const ship = add('manta')
+    ship.position.set(50, 300)
+    ship.scale.set(.4);
+
+    let fire = 0;
+
+    const shoot = () => {
+      fire += 12;
+      rocket.position.x = fire + 70;
+      if (fire > 800) fire = 0;
+      requestAnimationFrame(shoot)
+    }
+    requestAnimationFrame(shoot)
+
+    
+    
+
+    const enemyes = Object.keys(sheet).reduce(
+      (collect, mob, index) => ({...collect, [mob]: add(mob, 100 * index, 400 - (Math.random() * 200), .8, base) })
+    , {});
+
+    let ep = 0;
+    const enemyMoves = () => {
+      ep -= 7;
+      base.position.x = ep;
+      if (ep < -4500) ep = 0;
+      requestAnimationFrame(enemyMoves)
+    }
+    requestAnimationFrame(enemyMoves)
+  
+
+  };
+  
+  
+
 }
+
+

@@ -1,0 +1,207 @@
+{
+	"version": 8,
+	"type": "suv2",
+	"appVer": "1.6.1",
+	"atlasSettings": {
+		"id": "oZSpveXfVzW8h9KjvP5b",
+		"type": 0,
+		"width": 0,
+		"height": 0,
+		"algorithm": "HEURISTIC",
+		"padding": 1,
+		"algorithmSettings": [
+			{
+				"type": "LEGACY",
+				"quality": 16
+			},
+			{
+				"type": "HEURISTIC",
+				"qualityMin": 4,
+				"qualityMax": 8,
+				"qualityStepType": 0,
+				"qualityStepValue": 2
+			}
+		]
+	},
+	"exportFormat": [
+		{
+			"id": "1o5JkvaiugsOhwDyxFnQ",
+			"type": "FBX",
+			"data": {
+				"flipZ": true,
+				"upVector": 0,
+				"ascii": false
+			}
+		},
+		{
+			"id": "ho97ILgJHDDzykKqkuP6",
+			"type": "COLLADA",
+			"data": {
+				"flipZ": true,
+				"upVector": 0
+			}
+		},
+		{
+			"id": "hyCKLYQir0IL6DmZXZFh",
+			"type": "OBJ",
+			"data": {
+				"flipZ": true,
+				"upVector": 0
+			}
+		},
+		{
+			"id": "TMwAmLhVQhUCpL29L3EQ",
+			"type": "JSON",
+			"data": {
+				"schema": 1,
+				"triOrder": 0
+			}
+		},
+		{
+			"id": "kAOx8BkgUudW27APR6yD",
+			"type": "UNITY_SPRITE",
+			"data": {
+				"textureUID": "0000000000000000f000000000000000"
+			}
+		},
+		{
+			"id": "515zT4RCw0C1RDPqtDQV",
+			"type": "UNITY_SPRITE_5.6~",
+			"data": {
+				"textureUID": "0000000000000000f000000000000000",
+				"version": "5.6~"
+			}
+		}
+	],
+	"channel": [
+		{
+			"id": "80k1BcrvVCHZISzbEx5o",
+			"name": "exportAtlas",
+			"path": "F:\\penge\\nebula-inspector\\source",
+			"format": 0,
+			"preAlpha": false,
+			"splitAlpha": false,
+			"settings": {}
+		}
+	],
+	"exportGroup": [
+		{
+			"id": "4PdnpKwub02LUCuKRG6b",
+			"name": "exportGroup",
+			"settings": {
+				"ref": "TMwAmLhVQhUCpL29L3EQ",
+				"path": "F:\\penge\\nebula-inspector\\source"
+			},
+			"materialName": "spriteUVMaterial",
+			"pixelPerUnit": 100,
+			"asSingle": false
+		}
+	],
+	"imageFile": [
+		{
+			"id": "pKY3oQ5d9GFyabCDQJ8o",
+			"channel": [
+				{
+					"ref": "80k1BcrvVCHZISzbEx5o",
+					"path": "F:/penge/nebula-inspector/source/images/nbi-sprite-sheet-simple.png",
+					"alpha": true
+				}
+			],
+			"export": {
+				"ref": "4PdnpKwub02LUCuKRG6b",
+				"path": ""
+			},
+			"name": "nbi-sprite-sheet-simple"
+		}
+	],
+	"fbxFile": [],
+	"spineFile": [],
+	"animFile": [],
+	"imageItem": [
+		{
+			"id": "pUQQrfh5MjaKzNftOqyH",
+			"ref": "pKY3oQ5d9GFyabCDQJ8o",
+			"name": "nbi-sprite-sheet-simple",
+			"pivot": {
+				"t": 1,
+				"p": {
+					"x": 0.5,
+					"y": 0.5
+				},
+				"a": 0
+			},
+			"selection": {
+				"active": 0,
+				"bbox": {
+					"min": {
+						"x": 0,
+						"y": 0
+					},
+					"max": {
+						"x": 0,
+						"y": 0
+					}
+				},
+				"polygon": []
+			},
+			"shape": {
+				"alphaThresh": 0.001,
+				"active": 0,
+				"data": {
+					"tight": {
+						"mode": 0,
+						"aCutoff": 0,
+						"offset": 3
+					},
+					"bbox": {
+						"rot": true
+					}
+				}
+			},
+			"tess": {
+				"t": 0,
+				"vIn": 1,
+				"vOut": 0
+			},
+			"z": 0,
+			"slice": {
+				"type": 0,
+				"data": {
+					"uSprite": {
+						"border": {
+							"x": 0,
+							"y": 0,
+							"z": 0,
+							"w": 0
+						}
+					},
+					"voronoi": {
+						"type": 0,
+						"data": {
+							"auto": {
+								"count": 3
+							}
+						}
+					}
+				}
+			},
+			"uvScale": {
+				"type": 0,
+				"value": 1
+			},
+			"vColor": {
+				"type": 0,
+				"data": {
+					"texture": {
+						"blur": 1
+					}
+				}
+			},
+			"meshOnly": {
+				"active": true,
+				"uvLayout": 0
+			}
+		}
+	],
+	"fbxItem": []
+}
