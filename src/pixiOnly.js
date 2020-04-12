@@ -12,8 +12,7 @@ export default () => {
   const loadAssets = (loader, resources) => {    
     const bg = new TilingSprite(resources['./images/nb-texture-1.png'].texture, 2048, 2048);
     app.stage.addChild(bg);
-    // bg.tint = 0x88FFAA
-    
+    bg.tint = 0x55FFFF
 
     const layer1 = addSprite(app, resources)('./images/twin-moons.png', 0, 0);        
 

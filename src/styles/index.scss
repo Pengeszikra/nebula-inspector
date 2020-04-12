@@ -2,6 +2,7 @@ html, body {
   margin: 0;
   padding: 0;
   background: #333;    
+  color: #AAA;
 }
 
 canvas {
@@ -9,4 +10,8 @@ canvas {
   height: 600px;  
   display: block;
   margin: 3em auto;
+}
+
+main {
+ margin: 1em; 
 }

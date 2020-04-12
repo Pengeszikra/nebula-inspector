@@ -1,4 +1,6 @@
-import pixiOnly from "./pixiOnly";
 import "./styles/index.scss";
+import pixiOnly from "./pixiOnly";
+import callbagGameLogic from "./callbagGameLogic";
 
-pixiOnly();
+callbagGameLogic();
+// pixiOnly();
