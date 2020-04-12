@@ -4,7 +4,7 @@ import hitTest from "./hitTest";
 
 export default () => {
   utils.skipHello();  
-  const root = document.getElementById('root');
+  const root = document.getElementById('pixi');
   const pixiApplicationConfig = {  width: 800, height: 600 };
   const app = new Application(pixiApplicationConfig);
   root.appendChild(app.view);
@@ -91,7 +91,7 @@ export default () => {
           bumm.position.y -= 50
           bumm.play()
           bumm.animationSpeed = .5;
-          bumm.tint = Math.random() * 0xFFFFFF
+          // bumm.tint = Math.random() * 0xFFFFFF
           bumm.loop = true;
           bumm.onLoop = () => bumm.destroy();
           
@@ -141,8 +141,8 @@ export default () => {
     // target practices 
 
     const targets = [
-      add('shileld', 300, 350, 1),
-      add('graviton', 500, 200, 0.5),
+      // add('shileld', 300, 350, 1),
+      add('graviton', 400, 400, 0.5),
       add('drones', 300, 300, .2)
     ]
 
@@ -166,7 +166,7 @@ export default () => {
       requestAnimationFrame(collosionDetection)
     }
 
-    requestAnimationFrame(collosionDetection)
+    // requestAnimationFrame(collosionDetection)
 
     app.stage.addChild(title)
 

@@ -3,6 +3,7 @@ html, body {
   padding: 0;
   background: #333;    
   color: #AAA;
+  position: relative;
 }
 
 canvas {
@@ -14,4 +15,15 @@ canvas {
 
 main {
  margin: 1em; 
+}
+
+#react {
+  position: absolute;
+  width: 800px;
+  height: auto;
+  background: transparent;
+  top: 0;
+  left: 5em;
+  color: yellowgreen;
+  pointer-events: none;
 }
