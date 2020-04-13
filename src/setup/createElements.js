@@ -16,5 +16,5 @@ export default resources => {
   const titleAsset = () => new Sprite(sheet['nebula-inspector']);
   const newExplosion = () => new AnimatedSprite(explosionTextures);
 
-  return {galaxy, twinMoon, sheet, titleAsset, newExplosion}
+  return {galaxy, twinMoon, sheet, titleAsset, newExplosion, resources}
 }

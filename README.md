@@ -26,3 +26,5 @@ Sprite sheet generation a quite problematic parts of creation
 ### pipeline setup for VS code 
 Important stepp is, turn off:
 > javascript.validate.enable : false <https://github.com/maestrow/pipeline-operator-in-js-howto>
+
+## functional programming paradigm
