@@ -4,7 +4,7 @@ import createApp from "./setup/createPixiApplication";
 import { TilingSprite, Sprite } from "pixi.js";
 import createElements from "./setup/createElements";
 import { nebulaConfig } from "./setup/nebulaConfig";
-import gameReducer, { initialState, splashFadeOut, fireRocket, GAME_OVER, gameOver, ASSET_READY, assetReady, SPLASH_FADE_OUT } from "./gameReducer";
+import gameReducer, { initialState, splashFadeOut, fireRocket, GAME_OVER, gameOver, ASSET_READY, assetReady, SPLASH_FADE_OUT, nextRound } from "./gameReducer";
 import {
   always, middleware, trace, jsonToString,
   fromIter, forEach, take, merge, map, filter,
@@ -18,7 +18,7 @@ let asset = null;
 export default () => render(<PlayWithBags />, document.getElementById('react'));
 const {app:{stage}, assetsLoaded} = createApp(nebulaConfig);
 
-const add = (sprite, x = 0, y = 0, scale = 1, parent = stage) => {  
+const add = (parent = stage) => (sprite, x = 0, y = 0, scale = 1) => {  
   const mob = sprite instanceof Sprite ? sprite : new Sprite(sprite);
   parent.addChild(mob);
   mob.position.set(x, y)
@@ -26,21 +26,27 @@ const add = (sprite, x = 0, y = 0, scale = 1, parent = stage) => {
   return mob;
 };
 
+const addStage = add(stage);
+
 const renderSplash = () => {
   const { galaxy, sheet } = asset;
-  add(galaxy);
-  add(sheet.moon, 200, 100);  
-  add(sheet.transporter, 400, 100, .5);
+  const splashPage = new Sprite();
+  add(splashPage)(galaxy);
+  add(splashPage)(sheet.moon, 200, 100);  
+  add(splashPage)(sheet.transporter, 400, 100, .5);
+  addStage(splashPage);
 }
 
 const renderMain = () => {
-  const { galaxy, sheet, titleAsset } = asset;
-  add(galaxy);
-  add(sheet['nebula-inspector'], 100, 50);
-  add(sheet.button, 50, 300, .7)
-  add(sheet.button, 230, 300, .7)
-  add(sheet.button, 400, 300, .7)
-  add(sheet.button, 630, 300, .7)
+  const { galaxy, sheet, titleAsset } = asset;  
+  const mainPage = new Sprite();
+  add(mainPage)(galaxy);
+  add(mainPage)(sheet['nebula-inspector'], 100, 50);
+  add(mainPage)(sheet.button, 50, 300, .7);
+  add(mainPage)(sheet.button, 230, 300, .7);
+  add(mainPage)(sheet.button, 400, 300, .7);
+  add(mainPage)(sheet.button, 630, 300, .7);
+  addStage(mainPage);
 }
 
 const gameRender = (state, {type, payload}) => {
@@ -64,7 +70,7 @@ const PlayWithBags = () => {
  
   const gamePlay = () => 
     fromPromise(assetsLoaded.then(({resources}) => assetReady(resources)))
-    // |> mergeWith( animationFrames |> take(12) )
+    |> mergeWith( animationFrames |> take(12) |> map(time => nextRound(time)))
     |> mergeWith( interval(2000) |> take(1) |> always(splashFadeOut()))
     |> mergeWith( fromEvent(document, 'keydown') |> filter(({key}) => key) |> map(({key}) => `press: ${key}`) )
     |> mergeWith( fromEvent(document, 'click') |> always(fireRocket()))
