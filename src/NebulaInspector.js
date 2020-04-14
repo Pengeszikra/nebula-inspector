@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { render } from "react-dom";
 import createApp from "./setup/createPixiApplication";
 import { TilingSprite, Sprite } from "pixi.js";
 import createElements from "./setup/createElements";
@@ -15,12 +14,10 @@ import {
   sample, interval, fromEvent, mergeWith, takeWhile,
   debounce, animationFrames, fromFunction, fromPromise
 } from "./utils/callbagHelpers";
-import { deepSet, set } from "./utils/job";
 import addSprite from "./addSprite";
 import playNebulaInspector from "./playNebulaInspector";
 import { divFactory } from "react-slash";
-
-export default () => render(<NebulaInspector />, document.getElementById('react'));
+import levelEditor from "./levelEditor";
 
 let state = initialState;
 let asset = null;
@@ -30,9 +27,8 @@ const {app:{stage}, assetsLoaded} = createApp(nebulaConfig);
 const addStage = stage |> addSprite;
 
 const renderSplash = () => {
-  const { galaxy, sheet, splashWithAction } = asset;
+  const {splashWithAction } = asset;
   addStage(splashWithAction);
-  console.log('-- renderSplash --')
   animationFrames 
     |> filter(time => time > 2000)
     |> takeWhile(time => time < 2500) 
@@ -40,14 +36,17 @@ const renderSplash = () => {
 }
 
 const renderMain = () => {
-  const { galaxy, sheet, titleAsset, splash } = asset;  
+  const { galaxy, sheet, mainNebula } = asset;  
   const mainPage = new Sprite();
-  addSprite(mainPage)(splash);
+  galaxy.alpha = 4;
+  animationFrames 
+    |> takeWhile( _ => state.phase === 'main')
+    |> forEach(time => galaxy.tilePosition.set(0, - time / 10))
+  
+  addSprite(mainPage)(galaxy);
   const title = new Sprite(sheet['nebula-inspector']);
   addSprite(mainPage)(title, 120, 50);
   addStage(mainPage);
-
-  console.log('-- renderMain --')
 }
 
 const routeReducer = (state, {type, payload}) => {
@@ -59,72 +58,48 @@ const routeReducer = (state, {type, payload}) => {
     case SPLASH_FADE_OUT:
       renderMain();
       break;
-    case GAME_ONE:
-    case GAME_TWO:
-    case GAME_THREE:
-      playNebulaInspector(state, asset, stage);
-      break;
   }
 }
-
-const PlayWithBags = () => {
-  const [content, setContent] = useState('-- callbag --');
-  const log = p => setContent(d => d ? [d,p].join('\n') :  p );
-  
-  const stillPlaying = ({type}) => type != GAME_OVER;
- 
-  const gamePlay = () => 
-    fromPromise(assetsLoaded.then(({resources}) => assetReady(resources)))
-    // |> mergeWith( animationFrames |> take(12) |> map(time => nextRound(time)))
-    |> mergeWith( interval(2500) |> take(1) |> always(splashFadeOut()))
-    |> mergeWith( fromEvent(document, 'keydown') |> filter(({key}) => key) |> map(({key}) => `press: ${key}`) )
-    |> mergeWith( fromEvent(document, 'click') |> always(fireRocket()))
-    |> map(p => p == 'press: x' ? gameOver() : p )
-    |> middleware(p => stillPlaying(p) ? null : log('-- end of session --'))  
-    |> takeWhile( stillPlaying )
-    |> middleware(p => log(jsonToString(p)))
-    |> filter(({type}) => !!type)
-    |> forEach(action => {      
-      state = gameReducer(state, action)
-      // state |> jsonToString |> log      
-      routeReducer(state, action)
-    })
-
-  useEffect(gamePlay, []);  
-
-  return (
-    <main><pre>{content}</pre></main>  
-  );
-};
 
 const [MainMenu, MenuButton] = divFactory('main-menu', 'menu-button');
 
 const setupAssets = ({resources}) => assetReady(resources);
 
-const NebulaInspector = () => {
+export default () => {
   const [route, setRoute] = useState(null);
   useEffect(() => 
     fromPromise(assetsLoaded.then(setupAssets))
       |> mergeWith( interval(2500) |> take(1) |> always(splashFadeOut()))
       |> filter(({type}) => !!type)
       |> forEach(action => {
-        const {phase} = gameReducer(state, action);
-        setRoute(phase);
+        state = gameReducer(state, action);
+        setRoute(state.phase);
         routeReducer(state, action);
       }
   ), []);
 
-  const play = () => {
+  const play = level => () => {
+    state = gameReducer(state, gameOne());
     setRoute(GAME_ONE);
-    playNebulaInspector(state, asset, stage)
+    switch(level) {
+      case 1: playNebulaInspector(state, asset, stage); break;
+      case 2:
+      case 3: levelEditor(state, asset, stage); break;
+    }    
   };
+
+  const exit = () => {
+    stage.children[1].destroy();
+    stage.children[0].alpha = 1;
+    setRoute('splash')
+  }
 
   return route === 'main' && (
     <MainMenu>
-      <MenuButton onClick={play}>Game 1</MenuButton>
-      <MenuButton onClick={play}>Game 2</MenuButton>
-      <MenuButton onClick={play}>Game 3</MenuButton>
-      <MenuButton>Exit</MenuButton>
+      <MenuButton onClick={play(1)}>Game 1</MenuButton>
+      <MenuButton onClick={play(2)}>Game 2</MenuButton>
+      <MenuButton onClick={play(3)}>Game 3</MenuButton>
+      <MenuButton onClick={exit}>Exit</MenuButton>
     </MainMenu>
   )
 }  

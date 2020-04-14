@@ -1,16 +1,12 @@
 import { Sprite, TilingSprite, AnimatedSprite } from "pixi.js";
-import sample from 'callbag-sample';
-
-
 
 export default resources => {    
-  console.log(resources)
   const getSprite = name => new Sprite(resources[`./images/${name}`].texture);
   
   const galaxy = new TilingSprite(resources['./images/nb-texture-1.png'].texture, 2048, 2048);
   galaxy.tint = 0x55FFFF;
 
-  const splash = getSprite('nebula-splash.jpg');
+  const mainNebula = getSprite('nebula-splash.jpg');
   const splashWithAction = getSprite('nebula-splash-with-action.jpg');
   //const splashOver = getSprite('splash-over.png');
 
@@ -28,6 +24,6 @@ export default resources => {
 
   return {
     galaxy, twinMoon, sheet, titleAsset, newExplosion, resources,
-    splash, splashWithAction
+    mainNebula, splashWithAction
   };
 }

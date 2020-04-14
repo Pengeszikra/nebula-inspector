@@ -1,6 +1,6 @@
+import React, { useState, useEffect } from "react";
+import { render } from "react-dom";
+import NebulaInspector from "./NebulaInspector";
 import "./styles/index.scss";
-import pixiOnly from "./pixiOnly";
-import callbagGameLogic from "./callbagGameLogic";
 
-callbagGameLogic();
-// pixiOnly();
+render(<NebulaInspector />, document.getElementById('react'));

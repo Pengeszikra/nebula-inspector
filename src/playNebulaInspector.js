@@ -1,4 +1,4 @@
-import { TilingSprite, Sprite } from "pixi.js";
+import { Sprite } from "pixi.js";
 import {
   always, middleware, trace, jsonToString,
   fromIter, forEach, take, merge, map, filter, 

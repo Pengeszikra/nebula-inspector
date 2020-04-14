@@ -2,11 +2,8 @@ import { actionCreator } from "react-slash";
 
 export const initialState = {
   phase: 'splash',
-  inspector: {x:0, y:0, maneuver: ship => ship.x += ship.speed, hull: 10, size: 3},
-  rockets: [],
-  enviroment: [],
-  invaders: [],
   isAssetReady: false,
+  isGamePlay: false,
 };
 
 export const [NEXT_ROUND, nextRound] = actionCreator('next-round');
@@ -29,16 +26,12 @@ export const [ASSET_READY, assetReady] = actionCreator('asset-ready');
 export default (state, {type, payload}) => {
   switch (type) {
     case ASSET_READY: return {...state, isAssetReady: true};
-    case SPLASH_FADE_OUT: return {...state, phase: 'main'};
+    case SPLASH_FADE_OUT: return {...state, phase: 'main', isGamePlay: false };
+    case GAME_ONE: return {...state, phase: GAME_ONE, isGamePlay: true };
+    case GAME_TWO: return {...state, phase: GAME_TWO, isGamePlay: true };
+    case GAME_THREE: return {...state, phase: GAME_THREE, isGamePlay: true };
+    case GAME_OVER: return {...state, phase: 'main', isGamePlay: false };
 
-    case GAME_ONE: return {...state, phase: GAME_ONE};
-    case GAME_TWO: return {...state, phase: GAME_TWO};
-    case GAME_THREE: return {...state, phase: GAME_THREE};
-    case GAME_OVER: return {...state, phase: 'main'};
-
-    case NEXT_ROUND: return {...state, inspector: {...state.inspector, x: state.inspector.x + state.inspector.speed}};
-    case INVADER_MANEUVER: return {...state, inspector: {...state.inspector, maneuver: payload }};
-    case FIRE_ROCKET: return {...state, rockets: [...state.rockets, 1]}
     default: return state;
   }
 };
