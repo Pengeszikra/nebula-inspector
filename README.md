@@ -1,4 +1,4 @@
-# Development process of intrudoctary game task
+# Development process of introductory game task
 This short game development task given from Play'n GO company: 
 
 work title : **Nebula Inspector**
@@ -24,7 +24,7 @@ const setScale = set('scale');
 const setPositionX = set('position')('x');
 const setRotation = set('rotation');
 const calc = calculus => parameter => value => target => {
-  
+
 };
 
 const state = {
@@ -45,9 +45,7 @@ const state = {
       movements:{
 
       }, 
-      attack: {
-
-      }
+      behaviour: mob => until(.3) |> fastForward |> until(.5) |> verticalRandom |> ramForward
       added: 383298 
     }
   ],
@@ -56,7 +54,8 @@ const state = {
       {
         id: 'layerOne',
         speedMultiplier: 3,
-        checkCollosion: () => {}, // or
+        checkCollosion: () => {}, 
+        // or
         isCollosion: true,        
         obstacles: [
           {
@@ -72,6 +71,70 @@ const state = {
 }
 ```
 *mix asset handling with state*
+
+```js
+  const alfa = {
+    ...gravitonDefault
+    deploy: mob => deployRandomPosition,
+    behaviour: mob => 
+      rail
+      |> arm(doubleLaser) 
+      |> until(.3) |> fastForward 
+      |> until(.5) |> fire(3) |> verticalRandom 
+      |> ramForward
+  }
+```
+*Behaviour is rail chained functions compose for descript invader full lifecycle*
+
+```js
+  const rail = mob => [mob, ask, {id: mobId}]
+  const arm = ([mob, ask, config]) => weapon => [mob, ask, {...config, weapon}]
+  const until = ([mob, ask, config]) => delay => [mob, ask, {...config, delay}]
+  const fastForward = ([mob, ask, config]) => {    
+    const extra = ... ; 
+    return [mob, ask, {...config, ...extra}];
+  }
+
+  // ask are sources of outer information like other mobs position and so like
+
+  const fire = ([mob, ask, config]) => amount => {    
+    const {radar, ship:{origo}} = ask;
+    const extra = ... ; 
+    return [mob, ask, {...config, ...extra}];
+  }
+```
+*that rail goes input of lifeCycle generator which are process any mob*
+
+```js
+function * lifeCycle(rail) {
+
+}
+
+const lifeCycleProcessor = () => {
+  // process lifeCycle
+}
+```
+*implementation plan of lifeCycle*
+
+```js
+  const player = {
+    behavior: ship => 
+      rail      
+      |> scoreCounting |> set(0)
+      |> arm(dualRocket)
+      |> arm(shield)
+      |> animation(forward |> action(INTERACTION_ON))
+      |> onPointerDown(launchRocket |> OnHit(gainScore |> ))
+      |> onScreenPress(maneuver)
+      |> checkCollosion(terrain |> invaders |> projectiles)
+      |> onHullExploding(finalExplosions |> action(GAME_OVER))
+  }
+```
+*behaviour of player*
+
+**2nd solution this behavior is a callbag** *maybe that is much easier than generator counterpart*
+
+> question: why need reducer ?
 
 # Prepare 
 
@@ -104,3 +167,5 @@ Sprite sheet generation a quite problematic parts of creation
 ### setup : ```yarn```
 ### build : ```yarn build```
 ### development: ```yarn start```
+### test : ```yarn test```
+### watch test : ```yarn watch```

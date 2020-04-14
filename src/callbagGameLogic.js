@@ -4,13 +4,18 @@ import createApp from "./setup/createPixiApplication";
 import { TilingSprite, Sprite } from "pixi.js";
 import createElements from "./setup/createElements";
 import { nebulaConfig } from "./setup/nebulaConfig";
-import gameReducer, { initialState, splashFadeOut, fireRocket, GAME_OVER, gameOver, ASSET_READY, assetReady, SPLASH_FADE_OUT, nextRound } from "./gameReducer";
+import gameReducer, { 
+  initialState, splashFadeOut, fireRocket, GAME_OVER, gameOver, 
+  ASSET_READY, assetReady, SPLASH_FADE_OUT, nextRound, 
+  gameOne, gameTwo, gameThree, exitFromGame 
+} from "./gameReducer";
 import {
   always, middleware, trace, jsonToString,
   fromIter, forEach, take, merge, map, filter,
   sample, interval, fromEvent, mergeWith, takeWhile,
   debounce, animationFrames, fromFunction, fromPromise
 } from "./utils/callbagHelpers";
+import { deepSet, set } from "./utils/job";
 
 let state = initialState;
 let asset = null;
@@ -26,7 +31,7 @@ const add = (parent = stage) => (sprite, x = 0, y = 0, scale = 1) => {
   return mob;
 };
 
-const addStage = add(stage);
+const addStage = stage |> add;
 
 const renderSplash = () => {
   const { galaxy, sheet } = asset;
@@ -41,11 +46,23 @@ const renderMain = () => {
   const { galaxy, sheet, titleAsset } = asset;  
   const mainPage = new Sprite();
   add(mainPage)(galaxy);
-  add(mainPage)(sheet['nebula-inspector'], 100, 50);
-  add(mainPage)(sheet.button, 50, 300, .7);
-  add(mainPage)(sheet.button, 230, 300, .7);
-  add(mainPage)(sheet.button, 400, 300, .7);
-  add(mainPage)(sheet.button, 630, 300, .7);
+  const title = new Sprite(sheet['nebula-inspector']);
+  add(mainPage)(title);
+  title 
+    |> deepSet('position', 'x')(150)
+    |> deepSet('position', 'y')(50)
+  ;  
+  [
+    [[sheet.button, 50, 300, .7], gameOne],
+    [[sheet.button, 230, 300, .7], gameTwo],
+    [[sheet.button, 400, 300, .7], gameThree],
+    [[sheet.button, 630, 300, .7], exitFromGame]
+  ].map(([mob, call]) => {
+    const button = add(mainPage)(...mob)
+    button.interactive = true;
+    button.buttonMode = true;
+    button.on('pointerup', () => console.log(call()) )
+  })
   addStage(mainPage);
 }
 
@@ -53,7 +70,6 @@ const gameRender = (state, {type, payload}) => {
   switch (type) {
     case ASSET_READY:       
       asset = createElements(payload);
-      console.log(asset)
       renderSplash();
       break;
     case SPLASH_FADE_OUT:
@@ -70,7 +86,7 @@ const PlayWithBags = () => {
  
   const gamePlay = () => 
     fromPromise(assetsLoaded.then(({resources}) => assetReady(resources)))
-    |> mergeWith( animationFrames |> take(12) |> map(time => nextRound(time)))
+    // |> mergeWith( animationFrames |> take(12) |> map(time => nextRound(time)))
     |> mergeWith( interval(2000) |> take(1) |> always(splashFadeOut()))
     |> mergeWith( fromEvent(document, 'keydown') |> filter(({key}) => key) |> map(({key}) => `press: ${key}`) )
     |> mergeWith( fromEvent(document, 'click') |> always(fireRocket()))
@@ -81,7 +97,7 @@ const PlayWithBags = () => {
     |> filter(({type}) => !!type)
     |> forEach(action => {      
       state = gameReducer(state, action)
-      state |> jsonToString |> log
+      // state |> jsonToString |> log
       gameRender(state, action)
     })
 
