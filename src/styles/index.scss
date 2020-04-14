@@ -27,12 +27,19 @@ main {
   text-align: center;
   color: yellowgreen;
   pointer-events: none;
+  display: flex;
+  justify-content: center;
 }
 
+// @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jura:wght@700&display=swap');
+
+
 .main-menu {
-  font-family: sans-serif;
-  font-size: 1.5em;  
+  font-family: 'Jura', sans-serif;
+  font-size: 1.8em;  
   line-height: 1.6em;
+  width: 400px;  
 }
 
 .menu-button {
@@ -41,6 +48,6 @@ main {
 
   &:hover {
     background: rgba(0,0,0,.3);
-    color: #8fe08a;
+    color: rgb(240, 252, 215);
   }
 }

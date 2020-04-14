@@ -1,0 +1,28 @@
+import sheetKeys from "./sheetKeys"
+
+export const allInvaders = [
+    sheetKeys.alien1 ,
+    sheetKeys.alien2 ,
+    sheetKeys.alien3 ,
+    sheetKeys.battleShip ,
+    sheetKeys.BlockadeRunner ,
+    sheetKeys.crawler ,
+    sheetKeys.delta ,
+    sheetKeys.drones ,
+    sheetKeys.dualGun ,
+    sheetKeys.fighter ,
+    sheetKeys.graviton ,
+    sheetKeys.gunner ,
+    sheetKeys.meteorLike ,
+    sheetKeys.particleGreen ,
+    sheetKeys.projectile2 ,
+    sheetKeys.projectile3 ,
+    sheetKeys.racer ,
+    sheetKeys.rower ,
+    sheetKeys.shileld ,
+    sheetKeys.speeder ,
+    sheetKeys.supporter ,
+    sheetKeys.tieTransporter ,
+    sheetKeys.transporter ,
+    sheetKeys.zorak ,    
+  ]

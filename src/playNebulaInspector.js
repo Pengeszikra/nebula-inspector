@@ -4,7 +4,7 @@ import {
   fromIter, forEach, take, merge, map, filter, 
   sample, interval, fromEvent, mergeWith, takeWhile,
   debounce, animationFrames, fromFunction, fromPromise
-} from "./utils/callbagHelpers";
+} from "./utils/callbagCollectors";
 import addSprite from "./addSprite";
 
 export default (state, asset, stage) => {

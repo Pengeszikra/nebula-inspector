@@ -13,7 +13,7 @@ import {
   fromIter, forEach, take, merge, map, filter,
   sample, interval, fromEvent, mergeWith, takeWhile,
   debounce, animationFrames, fromFunction, fromPromise
-} from "./utils/callbagHelpers";
+} from "./utils/callbagCollectors";
 import addSprite from "./addSprite";
 import playNebulaInspector from "./playNebulaInspector";
 import { divFactory } from "react-slash";
@@ -78,13 +78,22 @@ export default () => {
       }
   ), []);
 
+  const dificulties = [
+    {fireRate: 0,      gap: 2000, ace: 0,    maxSpeed:  7 },
+    {fireRate: 0.01,   gap:  800, ace: 0.05, maxSpeed: 10 },
+    {fireRate: 0.015,  gap:  500, ace: 0.1,  maxSpeed: 14 },
+  ]
+
   const play = level => () => {
     state = gameReducer(state, gameOne());
     setRoute(GAME_ONE);
+
+    const [level1, level2, level3] = dificulties;
+
     switch(level) {
-      case 1: playNebulaInspector(state, asset, stage); break;
-      case 2:
-      case 3: levelEditor(state, asset, stage); break;
+      case 1: level1 |> levelEditor(state, asset, stage); break;
+      case 2: level2 |> levelEditor(state, asset, stage); break;
+      case 3: level3 |> levelEditor(state, asset, stage); break;
     }    
   };
 
