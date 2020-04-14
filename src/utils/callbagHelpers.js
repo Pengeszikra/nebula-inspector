@@ -8,6 +8,7 @@ import { debounce } from "callbag-debounce";
 import animationFrames from "callbag-animation-frames";
 import fromFunction from "callbag-from-function";
 import fromPromise from "callbag-from-promise";
+import last from "callbag-last";
 
 const empty = () => {};
 const always = value => map(() => value);
@@ -21,9 +22,15 @@ const jsonToString = json => {
   }  
 };
 
+// |> takeWhile((_ => galaxy.alpha <=10) |> atLast(_=>galaxy.alpha = 100)) 
+export const atLast = lastAction => until => data => { 
+  if (!until()) lastAction(data); 
+  return until;
+};
+
 export {
   empty, always, middleware, trace, jsonToString,
-  fromIter, forEach, take, merge, map, filter,
+  fromIter, forEach, take, merge, map, filter, last,
   sample, interval, fromEvent, mergeWith, takeWhile,
-  debounce, animationFrames, fromFunction, fromPromise
+  debounce, animationFrames, fromFunction, fromPromise  
 }

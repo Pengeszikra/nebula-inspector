@@ -7,7 +7,7 @@ import { nebulaConfig } from "./setup/nebulaConfig";
 import gameReducer, { 
   initialState, splashFadeOut, fireRocket, GAME_OVER, gameOver, 
   ASSET_READY, assetReady, SPLASH_FADE_OUT, nextRound, 
-  gameOne, gameTwo, gameThree, exitFromGame 
+  gameOne, gameTwo, gameThree, exitFromGame, GAME_ONE, GAME_TWO, GAME_THREE 
 } from "./gameReducer";
 import {
   always, middleware, trace, jsonToString,
@@ -16,6 +16,8 @@ import {
   debounce, animationFrames, fromFunction, fromPromise
 } from "./utils/callbagHelpers";
 import { deepSet, set } from "./utils/job";
+import addSprite from "./addSprite";
+import playNebulaInspector from "./playNebulaInspector";
 
 let state = initialState;
 let asset = null;
@@ -23,31 +25,23 @@ let asset = null;
 export default () => render(<PlayWithBags />, document.getElementById('react'));
 const {app:{stage}, assetsLoaded} = createApp(nebulaConfig);
 
-const add = (parent = stage) => (sprite, x = 0, y = 0, scale = 1) => {  
-  const mob = sprite instanceof Sprite ? sprite : new Sprite(sprite);
-  parent.addChild(mob);
-  mob.position.set(x, y)
-  mob.scale.set(scale);
-  return mob;
-};
-
-const addStage = stage |> add;
+const addStage = stage |> addSprite;
 
 const renderSplash = () => {
-  const { galaxy, sheet } = asset;
-  const splashPage = new Sprite();
-  add(splashPage)(galaxy);
-  add(splashPage)(sheet.moon, 200, 100);  
-  add(splashPage)(sheet.transporter, 400, 100, .5);
-  addStage(splashPage);
+  const { galaxy, sheet, splashWithAction } = asset;
+  addStage(splashWithAction);
+  animationFrames 
+    |> filter(time => time > 2000)
+    |> takeWhile(time => time < 2500) 
+    |> forEach(() => splashWithAction.alpha -= .035)
 }
 
 const renderMain = () => {
-  const { galaxy, sheet, titleAsset } = asset;  
+  const { galaxy, sheet, titleAsset, splash } = asset;  
   const mainPage = new Sprite();
-  add(mainPage)(galaxy);
+  addSprite(mainPage)(splash);
   const title = new Sprite(sheet['nebula-inspector']);
-  add(mainPage)(title);
+  addSprite(mainPage)(title);
   title 
     |> deepSet('position', 'x')(150)
     |> deepSet('position', 'y')(50)
@@ -57,16 +51,16 @@ const renderMain = () => {
     [[sheet.button, 230, 300, .7], gameTwo],
     [[sheet.button, 400, 300, .7], gameThree],
     [[sheet.button, 630, 300, .7], exitFromGame]
-  ].map(([mob, call]) => {
-    const button = add(mainPage)(...mob)
+  ].map(([mob, pressButton]) => {
+    const button = addSprite(mainPage)(...mob)
     button.interactive = true;
     button.buttonMode = true;
-    button.on('pointerup', () => console.log(call()) )
+    button.on('pointerup', () => routeReducer(state, pressButton()) )
   })
   addStage(mainPage);
 }
 
-const gameRender = (state, {type, payload}) => {
+const routeReducer = (state, {type, payload}) => {
   switch (type) {
     case ASSET_READY:       
       asset = createElements(payload);
@@ -74,6 +68,11 @@ const gameRender = (state, {type, payload}) => {
       break;
     case SPLASH_FADE_OUT:
       renderMain();
+      break;
+    case GAME_ONE:
+    case GAME_TWO:
+    case GAME_THREE:
+      playNebulaInspector(state, asset, stage);
       break;
   }
 }
@@ -87,7 +86,7 @@ const PlayWithBags = () => {
   const gamePlay = () => 
     fromPromise(assetsLoaded.then(({resources}) => assetReady(resources)))
     // |> mergeWith( animationFrames |> take(12) |> map(time => nextRound(time)))
-    |> mergeWith( interval(2000) |> take(1) |> always(splashFadeOut()))
+    |> mergeWith( interval(2500) |> take(1) |> always(splashFadeOut()))
     |> mergeWith( fromEvent(document, 'keydown') |> filter(({key}) => key) |> map(({key}) => `press: ${key}`) )
     |> mergeWith( fromEvent(document, 'click') |> always(fireRocket()))
     |> map(p => p == 'press: x' ? gameOver() : p )
@@ -98,7 +97,7 @@ const PlayWithBags = () => {
     |> forEach(action => {      
       state = gameReducer(state, action)
       // state |> jsonToString |> log
-      gameRender(state, action)
+      routeReducer(state, action)
     })
 
   useEffect(gamePlay, []);  
