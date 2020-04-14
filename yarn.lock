@@ -2077,6 +2077,11 @@ callbag-basics@^3.2.0:
     callbag-skip "1"
     callbag-take "1"
 
+callbag-buffer@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/callbag-buffer/-/callbag-buffer-1.0.0.tgz#797f07b781591f03821e3c7ed0ddf837d128238b"
+  integrity sha512-o2QIDeWbwSoBxI7oC9WABNRX38J4N+oCH9vbAvte1jssbie/kaRG/X4fBeGoMsocR4wYNk23NTn3DMqY+C5fgA==
+
 callbag-combine@1:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/callbag-combine/-/callbag-combine-1.2.0.tgz#72628d05f7208d720a29fe1be7ff6fdc221d67df"
@@ -2113,6 +2118,11 @@ callbag-defer@^1.1.0:
     callbag "^1.2.0"
     callbag-flatten "^1.4.0"
     callbag-lazy "^2.0.1"
+
+callbag-delay@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/callbag-delay/-/callbag-delay-0.1.0.tgz#8a036a70942e614a347d0ce413c7f0b0e7641602"
+  integrity sha512-zGef76kRirh9OVjzA11qqUJ/AYFrkN7nSfP2cXSslrE6NSFmo20ywVedtEcilsmFaMobpaSsTDcRbyYADiUTgg==
 
 callbag-duration-progress@^2.0.0:
   version "2.0.0"
@@ -2287,7 +2297,14 @@ callbag-timer@^1.0.0:
   resolved "https://registry.yarnpkg.com/callbag-timer/-/callbag-timer-1.0.0.tgz#076f720ebbbf5aeff6d6a987aefe865b43ebdae9"
   integrity sha512-iLmp08Q2b8O1VlGaYj7WCG8iQUHla7lRBmF4yg0IXjMiYW2nDwWyI5tzgPExlTAsAy+USu9V7gC+eZSqqjRQCg==
 
-callbag@1, callbag@^1.1.0, callbag@^1.2.0:
+callbag-wait@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/callbag-wait/-/callbag-wait-2.1.0.tgz#deab72970c565d40f1a86051eb517cf469fa7100"
+  integrity sha512-r+4hRsycJpoDWQN5rFYLbWKDVafnHlcPbiJN2aqzpeFDS7ZdMOPK6pCs56UZjYN0fQkAff1PoDBbtAoaobO2Dg==
+  dependencies:
+    callbag "~1.2.0"
+
+callbag@1, callbag@^1.1.0, callbag@^1.2.0, callbag@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/callbag/-/callbag-1.2.0.tgz#45e73962a466056c6e5f86f5627b35cf0c4df101"
   integrity sha512-RMcVOk2oyA8CyCt/HsLEvnvvttKlaGVaG0uOo5IY7RpdiPLhStjxv5oYre33VJfT8kJE+cuKLSNHooz7yCUdhQ==

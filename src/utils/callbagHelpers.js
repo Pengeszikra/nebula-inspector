@@ -8,6 +8,9 @@ import { debounce } from "callbag-debounce";
 import animationFrames from "callbag-animation-frames";
 import fromFunction from "callbag-from-function";
 import fromPromise from "callbag-from-promise";
+import wait from "callbag-wait";
+import duration from "callbag-duration-progress";
+import delay from "callbag-delay";
 
 const empty = () => {};
 const always = value => map(() => value);
@@ -31,5 +34,5 @@ export {
   fromIter, forEach, take, merge, map, filter,
   sample, interval, fromEvent, mergeWith, takeWhile,
   debounce, animationFrames, fromFunction, fromPromise,
-  saga
+  saga, wait, duration, delay
 }

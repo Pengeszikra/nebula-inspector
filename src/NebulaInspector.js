@@ -96,10 +96,10 @@ export default () => {
 
   return route === 'main' && (
     <MainMenu>
-      <MenuButton onClick={play(1)}>Game 1</MenuButton>
-      <MenuButton onClick={play(2)}>Game 2</MenuButton>
-      <MenuButton onClick={play(3)}>Game 3</MenuButton>
-      <MenuButton onClick={exit}>Exit</MenuButton>
+      <MenuButton onClick={play(1)}>GAME 1</MenuButton>
+      <MenuButton onClick={play(2)}>GAME 2</MenuButton>
+      <MenuButton onClick={play(3)}>GAME 3</MenuButton>
+      <MenuButton onClick={exit}>EXIT</MenuButton>
     </MainMenu>
   )
 }  
