@@ -9,14 +9,7 @@ work title : **Nebula Inspector**
 
 # Declarative vs. Imperative programming
 
-Jó kérdés, hogy megéri-e az imperative programozást ráerőltetni a pixi.js -es alkalmazásra, aminek 
-eredetileg OOP koncepciója van? Szerintem ha sikerül jól összerakni az asset kezelést a pure funkciókkal 
-összerakott vezérléssel, akkor deklaratív és tesztelhető módon lehetne vezérelni mind a mozgásokat, mind
-az interakcióak.
-
-Itt egy [jó leírás a funkcionális játékprogram fejlesztésről](https://cheesecakelabs.com/blog/functional-programming-game-js/), de igaza van abban, hogy egy határidős feljesztésben nem túl szerencsés belevágni a funkcionális programozásba. De ez egy olyan példaprogram, amit a tervek szerint referenciának is használhatok, szóval szerintem nem lövök mellé azzal, hogy ezt az utat választom.
-
-tehát a reakthoz hasonlóan egy (később talán 2) ```state```-et használok, és a callbag folyamatok ```action```-okon és ```reducer```-ekenn keresztül ezeket módosítják.
+I will try to made this demo with declarative methodologi, There is a  [good example about FN game development](https://cheesecakelabs.com/blog/functional-programming-game-js/), but he right about the short deadline.
 
 ```js
 const set = parameter => value => target => { target[parameter] = value; return value };
