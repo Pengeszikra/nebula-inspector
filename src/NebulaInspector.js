@@ -14,10 +14,10 @@ import {
   sample, interval, fromEvent, mergeWith, takeWhile,
   debounce, animationFrames, fromFunction, fromPromise
 } from "./utils/callbagCollectors";
-import addSprite from "./addSprite";
-import playNebulaInspector from "./playNebulaInspector";
+import addSprite from "./utils/addSprite";
 import { divFactory } from "react-slash";
-import levelEditor from "./levelEditor";
+import playNebulaInspector from "./playNebulaInspector";
+import levelBuilder from "./levelBuilder";
 
 let state = initialState;
 let asset = null;
@@ -91,9 +91,10 @@ export default () => {
     const [level1, level2, level3] = dificulties;
 
     switch(level) {
-      case 1: level1 |> levelEditor(state, asset, stage); break;
-      case 2: level2 |> levelEditor(state, asset, stage); break;
-      case 3: level3 |> levelEditor(state, asset, stage); break;
+      case 1: level1 |> playNebulaInspector(state, asset, stage); break;
+      case 2: level2 |> playNebulaInspector(state, asset, stage); break;
+      case 3: level3 |> playNebulaInspector(state, asset, stage); break;
+      case 4: level2 |> levelBuilder(state, asset, stage); break;
     }    
   };
 
@@ -108,6 +109,7 @@ export default () => {
       <MenuButton onClick={play(1)}>GAME 1</MenuButton>
       <MenuButton onClick={play(2)}>GAME 2</MenuButton>
       <MenuButton onClick={play(3)}>GAME 3</MenuButton>
+      <MenuButton onClick={play(4)}>BUILDER</MenuButton>
       <MenuButton onClick={exit}>EXIT</MenuButton>
     </MainMenu>
   )

@@ -17,7 +17,6 @@ import {
 } from "./utils/callbagHelpers";
 import { deepSet, set } from "./utils/job";
 import addSprite from "./addSprite";
-import playNebulaInspector from "./playNebulaInspector";
 import { divFactory } from "react-slash";
 
 export default () => render(<NebulaInspector />, document.getElementById('react'));
