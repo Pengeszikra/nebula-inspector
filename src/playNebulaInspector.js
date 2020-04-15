@@ -1,4 +1,4 @@
-import { Sprite, Point } from "pixi.js";
+import { Container, Sprite, Point, filters } from "pixi.js";
 import {
   always, middleware, trace, jsonToString,
   fromIter, forEach, take, merge, map, filter, 
@@ -9,14 +9,16 @@ import {
 } from "./utils/callbagCollectors";
 import addSprite, { centerPivot } from "./utils/addSprite";
 import sheetKeys from "./setup/sheetKeys";
-import { allInvaders } from "./setup/sheetSets";
+import { allInvaders, enviroment } from "./setup/sheetSets";
+import { easeInOutQuad, easeInOutQuint } from "./utils/easing";
+import { AdjustmentFilter } from '@pixi/filter-adjustment';
 
 function * mantaGoingToDie (manta, explode) {
   manta.tint = 0xAA0000;        
   manta.removeAllListeners();
   manta.parent.removeAllListeners();        
   
-  while (manta.position.y < 900) {
+  while (manta.position.y < 900 && manta.width < 500) {
     manta.position.x += 4;
     manta.position.y += 5;
     manta.angle += 7;
@@ -126,7 +128,7 @@ const fireSetup = (state, asset, areas) => ({position:{x,y}}) => {
   const rocket = addSprite(rocketArea, true)(sheet.rocket, x, y, .5);
   const explode = explodeSetup(state, asset, areas);
 
-  function * flyingRocker(speed) {
+  function * flyingRocket(speed) {
     while(rocket.position.x < 850) {
       rocket.position.x += speed;
       for (let invader of invaderArea.children) {
@@ -142,16 +144,16 @@ const fireSetup = (state, asset, areas) => ({position:{x,y}}) => {
     yield false;
   }
 
-  saga(flyingRocker(20));
+  saga(flyingRocket(20));
 }
 
 const mantaSetup = (state, asset, areas) => {
-  const {stage} = areas;
+  const {stage, playerArea} = areas;
   const fire = fireSetup(state, asset, areas);
   const explode = explodeSetup(state, asset, areas);
 
   const {sheet} = asset;
-  const manta = addSprite(stage, true)(sheet.manta, -500, 250, .4);
+  const manta = addSprite(playerArea, true)(sheet.manta, -500, 250, .4);
     
   const maneuver = ({data:{global:{x, y}}}) => manta.position.set(x, y);
 
@@ -174,38 +176,65 @@ const mantaSetup = (state, asset, areas) => {
   return manta;
 }
 
+const pickOne = array => array[array.length * Math.random() | 0];
+
+const fillLayer = (stage, asset, layer, config) => {
+  const {sheet} = asset;
+  const {getSize, getVertical} = config;
+
+  addSprite(layer, true)(
+    sheet[enviroment |> pickOne], 
+    1500 - layer.position.x, 
+    Math.random() * 600,
+    [.2, .4, .7, 1] |> pickOne
+  )
+};
+
 const galaxyFadeIn = (stage, galaxy) => {  
   galaxy.alpha = 0;
   galaxy.interactive = true;
   animationFrames 
-    |> takeWhile( _ => galaxy.alpha < 2 ) 
+    |> takeWhile( _ => galaxy.alpha < 5 ) 
     |> forEach( _ => galaxy.alpha += 0.03);
 };
 
-export default (state, asset, stage) => ({gap, ...config}) => {  
+export default (state, asset, stage) => ({gap, paralaxWait, ...config}) => {  
   const { galaxy } = asset;
   
   addSprite(stage)(galaxy); 
   galaxyFadeIn(stage, galaxy);
 
-  const invaderArea = new Sprite(); 
-  const buletArea = new Sprite();
-  const rocketArea = new Sprite();
-  const explodingArea = new Sprite();
-
+  const playerArea = new Container();
+  const invaderArea = new Container(); 
+  const buletArea = new Container();
+  const rocketArea = new Container();
+  const explodingArea = new Container();
+  const layer1 = new Container();
+  const layer2 = new Container();
+  const layer3 = new Container();  
+  
+  stage.addChild(layer1);
+  stage.addChild(layer2);
   stage.addChild(buletArea);
   stage.addChild(invaderArea);  
   stage.addChild(rocketArea);
+  stage.addChild(playerArea);
   stage.addChild(explodingArea);
+  stage.addChild(layer3);
 
-  const areas = {stage, buletArea, invaderArea, rocketArea, explodingArea};
+  const areas = {stage, buletArea, invaderArea, rocketArea, explodingArea, playerArea};
   
   const ship = mantaSetup(state, asset, areas);
   const getShip = () => ship;
 
   const stillPlay = () => getShip() && getShip().alpha > 0;
- 
-  const scroll = time => galaxy.tilePosition.set(- time / 10, 0);
+
+  const scroll = time => {    
+    galaxy.tilePosition.set(- time * .1, 0);
+    layer1.position.x = - time * .2;
+    layer2.position.x = - time * .3;
+    layer3.position.x = - time * .4;
+  };
   animationFrames 
     |> takeWhile(stillPlay)
     |> forEach(scroll);
@@ -215,4 +244,74 @@ export default (state, asset, stage) => ({gap, ...config}) => {
     |> wait(2500)
     |> takeWhile(stillPlay)
     |> forEach( _ => invadersSetup(state, asset, areas)(config, getShip));
+
+  // https://pixijs.io/pixi-filters/tools/demo/ 
+  // https://ihatetomatoes.net/how-to-work-with-images-and-pixi-js/
+
+  const colorMatrix = [
+    //R  G  B  A
+      1, 0, 0, 0,
+      0, 1, 0, 0,
+      0, 0, 1, 0,
+      0, 0, 0, 1
+    ];
+
+  const cmFilter1 = new filters.ColorMatrixFilter();
+  cmFilter1.matrix = [...colorMatrix];
+  layer1.filters = [    
+    new filters.BlurFilter(4),
+    cmFilter1
+  ];
+  cmFilter1.sepia(true);
+  cmFilter1.hue(-20);
+  
+
+  const cmFilter2 = new filters.ColorMatrixFilter();
+  cmFilter2.matrix = [...colorMatrix];
+  layer2.filters = [
+    new filters.BlurFilter(2),
+    cmFilter2
+  ];
+  cmFilter2.sepia(true);
+  cmFilter2.hue(+20);
+
+  const cmFilter3 = new filters.ColorMatrixFilter();
+  cmFilter3.matrix = [...colorMatrix];
+  layer3.filters = [
+    new filters.BlurFilter(2),
+    cmFilter3
+  ];
+  cmFilter1.sepia(true);
+  cmFilter1.hue(30);
+  
+  
+  const generateEnviroment = (layer, rate, config) => interval(rate) 
+    |> take(500)
+    |> wait(paralaxWait)
+    |> takeWhile(stillPlay)
+    |> forEach( _ => fillLayer(stage, asset, layer, config));
+
+  generateEnviroment(
+    layer1, 700, 
+    {
+      getVertical: _ => Math.random() * 600,
+      getSize    : _ => [.2, .4, .7] |> pickOne
+    }
+  );
+
+  generateEnviroment(
+    layer2, 1000, 
+    {
+      getVertical: _ => Math.random() |> easeInOutQuint * 600,
+      getSize    : _ => [.4, .7, 1] |> pickOne
+    }
+  );
+
+  generateEnviroment(
+    layer3, 1500, 
+    {
+      getVertical: _ => Math.random() |> easeInOutQuint * 600,
+      getSize    : _ => [.5, .8, 1.2] |> pickOne
+    }
+  );
 }

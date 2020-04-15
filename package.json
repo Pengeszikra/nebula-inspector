@@ -37,6 +37,7 @@
     "sass": "^1.26.3"
   },
   "dependencies": {
+    "@pixi/filter-adjustment": "^3.1.1",
     "callbag-animation-frames": "^2.1.0",
     "callbag-basics": "^3.2.0",
     "callbag-buffer": "^1.0.0",
@@ -53,12 +54,9 @@
     "callbag-take-while": "^2.0.0",
     "callbag-timer": "^1.0.0",
     "callbag-wait": "^2.1.0",
-    "pixi": "^0.3.1",
     "pixi.js": "^5.2.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-slash": "^0.8.3",
-    "yy": "^0.0.1",
-    "yy-intersects": "^1.0.8"
+    "react-slash": "^0.8.3"
   }
 }

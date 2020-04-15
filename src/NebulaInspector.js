@@ -79,9 +79,9 @@ export default () => {
   ), []);
 
   const dificulties = [
-    {fireRate: 0,      gap: 2000, ace: 0,    maxSpeed:  7 },
-    {fireRate: 0.01,   gap:  800, ace: 0.05, maxSpeed: 10 },
-    {fireRate: 0.015,  gap:  500, ace: 0.1,  maxSpeed: 14 },
+    {fireRate: 0,      gap: 2000, ace: 0,    maxSpeed:  7, paralaxWait:  1000 },
+    {fireRate: 0.01,   gap:  800, ace: 0.05, maxSpeed: 10, paralaxWait:  4000 },
+    {fireRate: 0.015,  gap:  500, ace: 0.1,  maxSpeed: 14, paralaxWait: 12000 },
   ]
 
   const play = level => () => {
