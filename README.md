@@ -136,6 +136,45 @@ const lifeCycleProcessor = () => {
 
 > question: why need reducer ?
 
+```js
+const saga = generator => animationFrames
+  |> sample(fromIter(generator))
+  |> takeWhile(isMoving => isMoving)
+  |> forEach(_ => {});
+```
+*callbag based generator use aka saga*
+
+```js
+const mantaSetup = (state, asset, areas) => {
+  const {stage} = areas;
+  const fire = fireSetup(state, asset, areas);
+  const explode = explodeSetup(state, asset, areas);
+
+  const {sheet} = asset;
+  const manta = addSprite(stage, true)(sheet.manta, -500, 250, .4);
+    
+  const maneuver = ({data:{global:{x, y}}}) => manta.position.set(x, y);
+
+  function * mantaIsReadyToAction (speed) {
+    while(manta.position.x < 100) {      
+      manta.position.x += speed
+      yield true
+    }
+    manta.interactive = true;
+    manta.buttonMode = true;
+    manta.on('pointerdown', () => fire(manta))
+    stage.interactive = true;
+    stage.on('mousemove', maneuver);
+    yield false
+  }
+
+  saga(mantaIsReadyToAction(5));
+
+  return manta;
+}
+```
+*usefull saga example*
+
 # Prepare 
 
 ### about functional programming paradigm
