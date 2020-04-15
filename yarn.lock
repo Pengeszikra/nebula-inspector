@@ -5874,6 +5874,11 @@ pixi.js@^5.2.1:
     "@pixi/ticker" "5.2.1"
     "@pixi/utils" "5.2.1"
 
+pixi@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/pixi/-/pixi-0.3.1.tgz#858cd6164a32a1e4b41192cdf5c6d98209300ba8"
+  integrity sha1-hYzWFkoyoeS0EZLN9cbZggkwC6g=
+
 pkg-dir@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/pkg-dir/-/pkg-dir-4.2.0.tgz#f099133df7ede422e81d1d8448270eeb3e4261f3"
@@ -7956,3 +7961,13 @@ yargs@^15.3.1:
     which-module "^2.0.0"
     y18n "^4.0.0"
     yargs-parser "^18.1.1"
+
+yy-intersects@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/yy-intersects/-/yy-intersects-1.0.8.tgz#a8bfc60afae8690665052d98f0d3bf2f5bf5bc1b"
+  integrity sha512-BW2FZYPfyftUa4uEw/W+TSShs6gIlMR0bJ49BL6Yrx2C+FFEsz8LN/MDqXyruq05wKw8hkVbQmQGy37mUmJzWg==
+
+yy@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/yy/-/yy-0.0.1.tgz#40d1efc8476d3d7ec7e0d6295620e8547121f7e7"
+  integrity sha1-QNHvyEdtPX7H4NYpViDoVHEh9+c=

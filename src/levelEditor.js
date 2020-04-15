@@ -1,4 +1,4 @@
-import { Sprite } from "pixi.js";
+import { Sprite, Point } from "pixi.js";
 import {
   always, middleware, trace, jsonToString,
   fromIter, forEach, take, merge, map, filter, 
@@ -10,10 +10,6 @@ import {
 import addSprite, { centerPivot } from "./addSprite";
 import sheetKeys from "./setup/sheetKeys";
 import { allInvaders } from "./setup/sheetSets";
-
-const radar = {
-
-};
 
 const enemyFireSetup = (state, asset, stage) => ({position:{x,y}}, vector) => {
   const {sheet} = asset;  
@@ -36,17 +32,42 @@ const enemyFireSetup = (state, asset, stage) => ({position:{x,y}}, vector) => {
   saga(flyingBulet(15));
 }
 
-const invadersSetup = (state, asset, stage, buletArea) => ({fireRate, ace, maxSpeed }) => {
+const invadersSetup = (state, asset, stage, buletArea, rocketArea) => ({fireRate, ace, maxSpeed }, getManta) => {
   const {sheet} = asset;
-  const enemyFire = enemyFireSetup(state, asset, buletArea)
+  const enemyFire = enemyFireSetup(state, asset, buletArea);
+  const explode = explodeSetup(state, asset, stage);
 
   const invaderKeys = allInvaders;
   const invaderName = invaderKeys[Math.random() * invaderKeys.length | 0];
   const invader = addSprite(stage, true)(sheet[invaderName], 1100, Math.random() * 600, .5 );
-
+  const manta = getManta ? getManta() : {position:{x:-10000, y:-10000}};
+    
   function * invaderAttack(speed) {
-    let vector = {x: -speed, y: ace ? Math.random() * 8 - 4 : 0 };    
+    let vector = {x: -speed, y: ace ? Math.random() * 8 - 4 : 0 };
     while(invader.position.x > -500) {
+      if (invader.containsPoint(manta.position)) {
+        explode(invader, .5);
+        explode(manta, .5);
+        invader.destroy();
+        manta.tint = 0xAA0000;        
+        manta.removeAllListeners();
+        manta.parent.removeAllListeners();        
+        
+        while (manta.position.y < 900) {
+          manta.position.x += 4;
+          manta.position.y += 5;
+          manta.angle += 7;
+          manta.alpha = Math.random() * 200;
+          manta.width *= 1.005;
+          manta.height *= 1.005;
+          yield true;
+        }
+        explode({position:{x:manta.position.x, y:600}}, .5);
+        manta.alpha = 0;
+                
+        yield false;
+      }
+
       invader.position.x += vector.x;
       invader.position.y += vector.y;
       if (Math.random() < ace) { vector.y = Math.random() * 8 - 4; }
@@ -79,11 +100,11 @@ const fireSetup = (state, asset, stage) => ({position:{x,y}}) => {
   const explode = explodeSetup(state, asset, stage);
 
   function * flyingRocker(speed) {
-    while(rocket.position.x < 700) {
+    while(rocket.position.x < 850) {
       rocket.position.x += speed;
       yield true;
     }
-    explode(rocket, .5);
+    // explode(rocket, .5);
     rocket.destroy();
     yield false;
   }
@@ -91,14 +112,13 @@ const fireSetup = (state, asset, stage) => ({position:{x,y}}) => {
   saga(flyingRocker(20));
 }
 
-
 const mantaSetup = (state, asset, stage, rocketArea) => {
-  const fire = fireSetup(state, asset, stage);
+  const fire = fireSetup(state, asset, rocketArea);
   const explode = explodeSetup(state, asset, stage);
 
   const {sheet} = asset;  
   const manta = addSprite(stage, true)(sheet.manta, -500, 250, .4);
-  
+    
   const maneuver = ({data:{global:{x, y}}}) => manta.position.set(x, y);
 
   function * mantaIsReadyToAction (speed) {
@@ -115,20 +135,23 @@ const mantaSetup = (state, asset, stage, rocketArea) => {
   }
 
   saga(mantaIsReadyToAction(5));
+
+  return manta;
 }
 
-export default (state, asset, stage) => ({gap, ...config}) => {  
-  const { galaxy } = asset;
-  addSprite(stage)(galaxy)
+const galaxyFadeIn = (stage, galaxy) => {  
   galaxy.alpha = 0;
   galaxy.interactive = true;
   animationFrames 
     |> takeWhile( _ => galaxy.alpha < 2 ) 
     |> forEach( _ => galaxy.alpha += 0.03);
-   
-  const scroll = time => galaxy.tilePosition.set(- time / 10, 0);
+};
+
+export default (state, asset, stage) => ({gap, ...config}) => {  
+  const { galaxy } = asset;
   
-  animationFrames |> forEach(scroll);
+  addSprite(stage)(galaxy); 
+  galaxyFadeIn(stage, galaxy);
 
   const invaderArea = new Sprite(); 
   const buletArea = new Sprite();
@@ -137,10 +160,20 @@ export default (state, asset, stage) => ({gap, ...config}) => {
   stage.addChild(invaderArea);  
   stage.addChild(rocketArea);
   
-  const manta = mantaSetup(state, asset, stage, rocketArea);
+  const ship = mantaSetup(state, asset, stage, rocketArea);
+  const getShip = () => ship;
 
+  const scroll = time => galaxy.tilePosition.set(- time / 10, 0);
+ 
+  const gameOver = () => ship.alpha > 0;
+ 
+  animationFrames 
+    |> takeWhile(gameOver)
+    |> forEach(scroll);
+  
   interval(gap)
-    |> take(1000)
-    |> wait(3000)
-    |> forEach(_ => config |> invadersSetup(state, asset, invaderArea, buletArea));
+    // |> take(1000)
+    |> wait(2500)
+    |> takeWhile(gameOver)
+    |> forEach( _ => invadersSetup(state, asset, invaderArea, buletArea, rocketArea)(config, getShip));
 }

@@ -53,9 +53,12 @@
     "callbag-take-while": "^2.0.0",
     "callbag-timer": "^1.0.0",
     "callbag-wait": "^2.1.0",
+    "pixi": "^0.3.1",
     "pixi.js": "^5.2.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-slash": "^0.8.3"
+    "react-slash": "^0.8.3",
+    "yy": "^0.0.1",
+    "yy-intersects": "^1.0.8"
   }
 }
