@@ -48,7 +48,7 @@ const enemyFireSetup = (state, asset, areas, getManta) => ({position:{x,y}}, vec
         explode(bulet, .5);
         explode(manta, .5);
         bulet.destroy();
-        for(let frame of  mantaGoingToDie(manta, explode)) yield frame;        
+        for (let frame of mantaGoingToDie(manta, explode)) yield frame;        
         yield false;    
       }
       
@@ -60,6 +60,11 @@ const enemyFireSetup = (state, asset, areas, getManta) => ({position:{x,y}}, vec
   }
 
   saga(flyingBulet(15));
+}
+
+export const smoothTurn = (turnAngle, maxTurning = 1) => {
+  const steps = turnAngle / maxTurning | 0 + 1;
+  return Array(steps).fill(turnAngle / steps);
 }
 
 const invadersSetup = (state, asset, areas) => ({fireRate, ace, maxSpeed }, getManta) => {
@@ -74,20 +79,22 @@ const invadersSetup = (state, asset, areas) => ({fireRate, ace, maxSpeed }, getM
   const manta = getManta ? getManta() : {position:{x:-10000, y:-10000}};
     
   function * invaderAttack (speed) { 
+    
     try {
       let vector = {x: -speed, y: ace ? Math.random() * 8 - 4 : 0 };    
+      let turning = [];
       while(invader.position.x > -500) {
         if (invader.containsPoint(manta.position)) {
           explode(invader, .5);
           explode(manta, .5);
           invader.destroy();
-          for(let frame of  mantaGoingToDie(manta, explode)) yield frame;
+          for (let frame of  mantaGoingToDie(manta, explode)) yield frame;
           yield false;      
         }
 
         invader.position.x += vector.x;
         invader.position.y += vector.y;
-        if (Math.random() < ace) { vector.y = Math.random() * 8 - 4; }
+        if (Math.random() < ace) { vector.y = Math.random() * 8 - 4 }
         if (Math.random() < fireRate) { enemyFire(invader, vector); }
         invader.angle = - vector.y * 4;
         yield true;
@@ -104,6 +111,7 @@ const explodeSetup = (state, asset, areas) => ({position}, speed = 1) =>  {
   const {explodingArea} = areas;
   const {newExplosion} = asset;
   const explosion = explodingArea.addChild(newExplosion());
+  explosion.angle = Math.random() * 360;
   explosion.position = position;  
   centerPivot(explosion);
   explosion.play();
@@ -121,7 +129,7 @@ const fireSetup = (state, asset, areas) => ({position:{x,y}}) => {
   function * flyingRocker(speed) {
     while(rocket.position.x < 850) {
       rocket.position.x += speed;
-      for(let invader of invaderArea.children) {
+      for (let invader of invaderArea.children) {
         if (rocket.containsPoint(invader.position)) {
           explode(invader, 0.5);
           invader.destroy();

@@ -175,6 +175,23 @@ const mantaSetup = (state, asset, areas) => {
 ```
 *usefull saga example*
 
+### I was spend to much time for implement smooth turning
+
+```js
+export const smoothTurn = (turnAngle, maxTurning = 1) => {
+  const steps = turnAngle / maxTurning | 0 + 1;
+  return Array(steps).fill(turnAngle / steps);
+}
+
+        if (!turning.length && Math.random() < ace) { 
+          vector.y = Math.random() * 8 - 4; 
+          turning = smoothTurn(vector.y * 4, .1);
+        }
+        
+        invader.angle = turning.length ? - turning.pop() : invader.angle;
+```
+*smooth turn relevant parts*
+
 # Prepare 
 
 ### about functional programming paradigm

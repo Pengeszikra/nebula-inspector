@@ -9,35 +9,60 @@ import {
 } from "./utils/callbagCollectors";
 import addSprite, { centerPivot } from "./utils/addSprite";
 import sheetKeys from "./setup/sheetKeys";
-import { allInvaders } from "./setup/sheetSets";
-
-const toolDown = (tool, shape, layer) => {    
-  const {x, y, width, height} = tool;
-  const copy = addSprite(layer, true)(shape, x, y);
-  copy.width = width;
-  copy.height = height;
-}
+import { allInvaders, allShape } from "./setup/sheetSets";
 
 const toolSetup = (state, asset, areas) => {
   const {stage, layer1, layer2, layer3} = areas;
   const {sheet} = asset;
 
-  let toolTexture = sheetKeys.redBlock;
-  const tool = addSprite(stage, true)(sheet[toolTexture], -500, 250, .4);
-    
+  let index = 0;  
+  let zoom = 1;
+  let toolTexture = allShape[0];  
+  let tool = new Sprite();
+  stage.addChild(tool);
+
+  const setTool = (i, z) => {
+    index = i;
+    toolTexture = allShape[i];  
+    zoom = z;
+    tool.removeChildren();
+    addSprite(tool, true)(sheet[toolTexture], 0, 0, z);
+  }
+
+  setTool(11, .4);
+
+  const toolDown = layer => {
+    const {x, y} = tool;
+    const copy = addSprite(layer, true)(sheet[toolTexture], x, y, zoom);
+  };
+  
+
   const drag = ({data:{global:{x, y}}}) => tool.position.set(x, y);
 
-  function * toolIsReadyToAction (speed) {
+  function * toolIsReadyToAction () {
     tool.interactive = true;
     tool.buttonMode = true;
-    tool.on('pointerdown', () => toolDown(tool, sheet[toolTexture], layer3) )
+    tool.on('pointerdown', () => toolDown(layer3) )
     stage.interactive = true;
     stage.on('mousemove', drag);
 
     yield false
   }
 
-  saga(toolIsReadyToAction(5));
+  saga(toolIsReadyToAction());
+
+  fromEvent(document, 'keydown') |> forEach( ({key}) => {
+    switch(key) {
+      case '+': return setTool(Math.min(index + 1, allShape.length), zoom);
+      case '-': return setTool(Math.max(index - 1, 0), zoom);
+      case '1': return setTool(index, .2);
+      case '2': return setTool(index, .4);
+      case '3': return setTool(index, .7);
+      case '4': return setTool(index, 1);
+      case '5': return setTool(index, 1.5);
+      case 'z': layer3.removeChildren(layer3.children.length - 1);
+    }
+  })
 
   return tool;
 }
@@ -71,5 +96,4 @@ export default (state, asset, stage) => ({gap, ...config}) => {
   animationFrames 
     |> takeWhile(underBuilding)
     |> forEach(scroll);
-
 };
