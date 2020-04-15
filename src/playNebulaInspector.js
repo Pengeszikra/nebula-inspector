@@ -1,40 +1,41 @@
-import { Container, Sprite, Point, filters } from "pixi.js";
+import { Container, Sprite, Point, filters, SpriteMaskFilter } from "pixi.js";
 import {
-  always, middleware, trace, jsonToString,
+  always, middleware, trace, jsonToString, wait,
   fromIter, forEach, take, merge, map, filter, 
   sample, interval, fromEvent, mergeWith, takeWhile,
-  debounce, animationFrames, fromFunction, fromPromise,
-  saga,
-  wait
+  debounce, animationFrames, fromFunction, fromPromise, 
 } from "./utils/callbagCollectors";
 import addSprite, { centerPivot } from "./utils/addSprite";
 import sheetKeys from "./setup/sheetKeys";
 import { allInvaders, enviroment } from "./setup/sheetSets";
 import { easeInOutQuad, easeInOutQuint } from "./utils/easing";
 import { AdjustmentFilter } from '@pixi/filter-adjustment';
+import { saga, sagaUntil } from "./utils/callbagCollectors";
 
 function * mantaGoingToDie (manta, explode) {
   manta.tint = 0xAA0000;        
   manta.removeAllListeners();
   manta.parent.removeAllListeners();        
   
-  while (manta.position.y < 900 && manta.width < 500) {
-    manta.position.x += 4;
-    manta.position.y += 5;
-    manta.angle += 7;
-    manta.alpha = Math.random() * 200;
-    manta.width *= 1.005;
-    manta.height *= 1.005;
-    yield true;
-  }
-  explode({position:{x:manta.position.x, y:600}}, .5);
-  manta.alpha = 0;
-  yield true;
+  try {
+    while (manta.position.y < 900 && manta.width < 500) {
+      manta.position.x += 4;
+      manta.position.y += 5;
+      manta.angle += 7;
+      manta.alpha = Math.random() * 200;
+      manta.width *= 1.005;
+      manta.height *= 1.005;
+      yield true;
+    }
+    explode({position:{x:manta.position.x, y:600}}, .5);
+    manta.alpha = 0;
+    yield false;
+  } catch(err) { yield false };   
 }
 
 const enemyFireSetup = (state, asset, areas, getManta) => ({position:{x,y}}, vector) => {
   const {buletArea} = areas;
-  const {sheet} = asset;  
+  const {sheet} = asset;
   const bulet = addSprite(buletArea, true)(sheet[sheetKeys.blueSun], x, y, .05);
   const explode = explodeSetup(state, asset, areas);
   const manta = getManta ? getManta() : {position:{x:-10000, y:-10000}};
@@ -42,23 +43,25 @@ const enemyFireSetup = (state, asset, areas, getManta) => ({position:{x,y}}, vec
   const buletVector = {x: vector.x * 3, y: vector.y * 3};
   
   function * flyingBulet(speed) {
-    while(bulet.position.x > -100) {
-      bulet.position.x += buletVector.x;
-      bulet.position.y += buletVector.y;      
+    try {
+      while(bulet.position.x > -100) {
+        bulet.position.x += buletVector.x;
+        bulet.position.y += buletVector.y;      
 
-      if (manta.containsPoint(bulet.position)) {
-        explode(bulet, .5);
-        explode(manta, .5);
-        bulet.destroy();
-        for (let frame of mantaGoingToDie(manta, explode)) yield frame;        
-        yield false;    
+        if (manta.containsPoint(bulet.position)) {
+          explode(bulet, .5);
+          explode(manta, .5);
+          bulet.destroy();
+          for (let frame of mantaGoingToDie(manta, explode)) yield frame;        
+          yield false;    
+        }
+        
+        yield true;            
       }
-      
-      yield true;            
-    }
-    explode(bulet, .5);
-    bulet.destroy();
-    yield false;
+      explode(bulet, .5);
+      bulet.destroy();
+      yield false;
+    } catch(err) { yield false };      
   }
 
   saga(flyingBulet(15));
@@ -190,19 +193,27 @@ const fillLayer = (stage, asset, layer, config) => {
   )
 };
 
-const galaxyFadeIn = (stage, galaxy) => {  
+const galaxyFadeIn = (stage, newGalaxy) => {  
+  const galaxy = newGalaxy();  
+  galaxy.tint = 0x55FFFF;
   galaxy.alpha = 0;
   galaxy.interactive = true;
+  stage.addChild(galaxy);
+
   animationFrames 
     |> takeWhile( _ => galaxy.alpha < 5 ) 
     |> forEach( _ => galaxy.alpha += 0.03);
+  
+  return galaxy;
 };
 
-export default (state, asset, stage) => ({gap, paralaxWait, ...config}) => {  
-  const { galaxy } = asset;
-  
-  addSprite(stage)(galaxy); 
-  galaxyFadeIn(stage, galaxy);
+export default (state, asset, stage, backToMain) => ({gap, paralaxWait, ...config}) => {  
+  const { newGalaxy } = asset;
+
+  const gameArea = new Container();
+  stage.addChild(gameArea);
+    
+  const galaxy = galaxyFadeIn(gameArea, newGalaxy);
 
   const playerArea = new Container();
   const invaderArea = new Container(); 
@@ -213,28 +224,29 @@ export default (state, asset, stage) => ({gap, paralaxWait, ...config}) => {
   const layer2 = new Container();
   const layer3 = new Container();  
   
-  stage.addChild(layer1);
-  stage.addChild(layer2);
-  stage.addChild(buletArea);
-  stage.addChild(invaderArea);  
-  stage.addChild(rocketArea);
-  stage.addChild(playerArea);
-  stage.addChild(explodingArea);
-  stage.addChild(layer3);
+  gameArea.addChild(layer1);
+  gameArea.addChild(layer2);
+  gameArea.addChild(buletArea);
+  gameArea.addChild(invaderArea);  
+  gameArea.addChild(rocketArea);
+  gameArea.addChild(playerArea);
+  gameArea.addChild(explodingArea);
+  gameArea.addChild(layer3);
 
-  const areas = {stage, buletArea, invaderArea, rocketArea, explodingArea, playerArea};
+  const areas = {stage:gameArea, buletArea, invaderArea, rocketArea, explodingArea, playerArea};
   
   const ship = mantaSetup(state, asset, areas);
   const getShip = () => ship;
 
   const stillPlay = () => getShip() && getShip().alpha > 0;
 
-  const scroll = time => {    
+  const scroll = time => {
     galaxy.tilePosition.set(- time * .1, 0);
     layer1.position.x = - time * .2;
     layer2.position.x = - time * .3;
     layer3.position.x = - time * .4;
   };
+
   animationFrames 
     |> takeWhile(stillPlay)
     |> forEach(scroll);
@@ -263,7 +275,7 @@ export default (state, asset, stage) => ({gap, paralaxWait, ...config}) => {
     cmFilter1
   ];
   cmFilter1.sepia(true);
-  cmFilter1.hue(-20);
+  cmFilter1.hue(40);
   
 
   const cmFilter2 = new filters.ColorMatrixFilter();
@@ -273,16 +285,15 @@ export default (state, asset, stage) => ({gap, paralaxWait, ...config}) => {
     cmFilter2
   ];
   cmFilter2.sepia(true);
-  cmFilter2.hue(+20);
+  cmFilter2.hue(45);
 
   const cmFilter3 = new filters.ColorMatrixFilter();
   cmFilter3.matrix = [...colorMatrix];
   layer3.filters = [
-    new filters.BlurFilter(2),
     cmFilter3
   ];
-  cmFilter1.sepia(true);
-  cmFilter1.hue(30);
+  cmFilter3.sepia(true);
+  cmFilter3.hue(50);
   
   
   const generateEnviroment = (layer, rate, config) => interval(rate) 
@@ -314,4 +325,18 @@ export default (state, asset, stage) => ({gap, paralaxWait, ...config}) => {
       getSize    : _ => [.5, .8, 1.2] |> pickOne
     }
   );
+
+  function * handleFinish () {
+    while (stillPlay()) {
+      yield true;
+    }
+    console.log('---> back to main <---');
+    yield true
+    gameArea.position.set(-1000, -1000);
+    gameArea.visible = false;
+    backToMain();
+    yield false;
+  }
+
+  saga(handleFinish())  
 }

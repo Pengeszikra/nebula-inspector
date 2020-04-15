@@ -3,8 +3,7 @@ import { Sprite, TilingSprite, AnimatedSprite } from "pixi.js";
 export default resources => {    
   const getSprite = name => new Sprite(resources[`./images/${name}`].texture);
   
-  const galaxy = new TilingSprite(resources['./images/nb-texture-1.png'].texture, 2048, 2048);
-  galaxy.tint = 0x55FFFF;
+  const newGalaxy = () => new TilingSprite(resources['./images/nb-texture-1.png'].texture, 2048, 2048);
 
   const mainNebula = getSprite('nebula-splash.jpg');
   const splashWithAction = getSprite('nebula-splash-with-action.jpg');
@@ -23,7 +22,7 @@ export default resources => {
   const newExplosion = () => new AnimatedSprite(explosionTextures);
 
   return {
-    galaxy, twinMoon, sheet, titleAsset, newExplosion, resources,
+    newGalaxy, twinMoon, sheet, titleAsset, newExplosion, resources,
     mainNebula, splashWithAction
   };
 }

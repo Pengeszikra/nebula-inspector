@@ -29,10 +29,15 @@ const saga = generator => animationFrames
   |> takeWhile(isMoving => isMoving)
   |> forEach(_ => {});
 
+const sagaUntil = (until = _ => true) => generator => animationFrames
+  |> sample(fromIter(generator))
+  |> takeWhile(isMoving => isMoving && until)
+  |> forEach(_ => {});
+
 export {
   empty, always, middleware, trace, jsonToString,
   fromIter, forEach, take, merge, map, filter,
   sample, interval, fromEvent, mergeWith, takeWhile,
   debounce, animationFrames, fromFunction, fromPromise,
-  saga, wait, duration, delay
+  saga, sagaUntil, wait, duration, delay, 
 }

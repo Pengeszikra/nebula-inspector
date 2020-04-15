@@ -12,12 +12,13 @@ import {
   always, middleware, trace, jsonToString,
   fromIter, forEach, take, merge, map, filter,
   sample, interval, fromEvent, mergeWith, takeWhile,
-  debounce, animationFrames, fromFunction, fromPromise
+  debounce, animationFrames, fromFunction, fromPromise, wait
 } from "./utils/callbagCollectors";
 import addSprite from "./utils/addSprite";
 import { divFactory } from "react-slash";
 import playNebulaInspector from "./playNebulaInspector";
 import levelBuilder from "./levelBuilder";
+import sheetKeys from "./setup/sheetKeys";
 
 let state = initialState;
 let asset = null;
@@ -35,18 +36,24 @@ const renderSplash = () => {
     |> forEach(() => splashWithAction.alpha -= .035)
 }
 
-const renderMain = () => {
-  const { galaxy, sheet, mainNebula } = asset;  
-  const mainPage = new Sprite();
+const mainPage = new Sprite();
+addStage(mainPage);
+
+const scrollUpGalaxy = galaxy => {
   galaxy.alpha = 4;
   animationFrames 
     |> takeWhile( _ => state.phase === 'main')
-    |> forEach(time => galaxy.tilePosition.set(0, - time / 10))
-  
-  addSprite(mainPage)(galaxy);
-  const title = new Sprite(sheet['nebula-inspector']);
-  addSprite(mainPage)(title, 120, 50);
-  addStage(mainPage);
+    |> forEach(time => galaxy.tilePosition.set(0, - time / 10));
+}  
+
+const renderMain = () => {
+  const { newGalaxy, sheet, mainNebula } = asset;  
+  const galaxy = newGalaxy();
+  galaxy.tint = 0x55FFFF;
+  galaxy.name = 'galaxy';
+  scrollUpGalaxy(galaxy)
+  mainPage.addChild(galaxy);  
+  addSprite(mainPage)(sheet[sheetKeys.nebulaInspector], 120, 50);  
 }
 
 const routeReducer = (state, {type, payload}) => {
@@ -78,6 +85,12 @@ export default () => {
       }
   ), []);
 
+  const backToMain = () => {
+      setRoute('main');
+      const galaxy = mainPage.getChildByName('galaxy');
+      scrollUpGalaxy(galaxy);
+  };
+
   const dificulties = [
     {fireRate: 0,      gap: 2000, ace: 0,    maxSpeed:  7, paralaxWait:  1000 },
     {fireRate: 0.01,   gap:  800, ace: 0.05, maxSpeed: 10, paralaxWait:  4000 },
@@ -91,10 +104,10 @@ export default () => {
     const [level1, level2, level3] = dificulties;
 
     switch(level) {
-      case 1: level1 |> playNebulaInspector(state, asset, stage); break;
-      case 2: level2 |> playNebulaInspector(state, asset, stage); break;
-      case 3: level3 |> playNebulaInspector(state, asset, stage); break;
-      case 4: level2 |> levelBuilder(state, asset, stage); break;
+      case 1: level1 |> playNebulaInspector(state, asset, stage, backToMain); break;
+      case 2: level2 |> playNebulaInspector(state, asset, stage, backToMain); break;
+      case 3: level3 |> playNebulaInspector(state, asset, stage, backToMain); break;
+      case 4: level2 |> levelBuilder(state, asset, stage, backToMain); break;
     }    
   };
 
@@ -109,7 +122,7 @@ export default () => {
       <MenuButton onClick={play(1)}>GAME 1</MenuButton>
       <MenuButton onClick={play(2)}>GAME 2</MenuButton>
       <MenuButton onClick={play(3)}>GAME 3</MenuButton>
-      <MenuButton onClick={play(4)}>BUILDER</MenuButton>
+      {/* <MenuButton onClick={play(4)}>BUILDER</MenuButton> */}
       <MenuButton onClick={exit}>EXIT</MenuButton>
     </MainMenu>
   )

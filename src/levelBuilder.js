@@ -1,4 +1,4 @@
-import { Sprite, Point } from "pixi.js";
+import { Sprite, Point, Container } from "pixi.js";
 import {
   always, middleware, trace, jsonToString,
   fromIter, forEach, take, merge, map, filter, 
@@ -11,7 +11,7 @@ import addSprite, { centerPivot } from "./utils/addSprite";
 import sheetKeys from "./setup/sheetKeys";
 import { allInvaders, allShape } from "./setup/sheetSets";
 
-const toolSetup = (state, asset, areas) => {
+const toolSetup = (state, asset, areas, backToMain, stillWorking) => {
   const {stage, layer1, layer2, layer3} = areas;
   const {sheet} = asset;
 
@@ -45,13 +45,12 @@ const toolSetup = (state, asset, areas) => {
     tool.on('pointerdown', () => toolDown(layer3) )
     stage.interactive = true;
     stage.on('mousemove', drag);
-
     yield false
   }
 
   saga(toolIsReadyToAction());
 
-  fromEvent(document, 'keydown') |> forEach( ({key}) => {
+  fromEvent(document, 'keydown') |> takeWhile(stillWorking) |> forEach( ({key}) => {
     switch(key) {
       case '+': return setTool(Math.min(index + 1, allShape.length), zoom);
       case '-': return setTool(Math.max(index - 1, 0), zoom);
@@ -60,40 +59,49 @@ const toolSetup = (state, asset, areas) => {
       case '3': return setTool(index, .7);
       case '4': return setTool(index, 1);
       case '5': return setTool(index, 1.5);
-      case 'z': layer3.removeChildren(layer3.children.length - 1);
+      case 'z': return layer3.removeChildren(layer3.children.length - 1);      
+      case 'Escape': 
+        console.log('end of building')
+        stage.position.set(-10000,-20000);
+        tool.interactive = false;
+        stage.interactive = false;
+        stage.visible = false;
+        backToMain();
+        ;break;
     }
   })
 
   return tool;
 }
 
-export default (state, asset, stage) => ({gap, ...config}) => {  
-  const { galaxy } = asset;
-  // galaxy.tint = 0xFFFFFF;
-  
+export default (state, asset, stage, backToMain) => ({gap, ...config}) => {  
+  const { newGalaxy } = asset;
+  const galaxy = newGalaxy();
+  galaxy.alpha = 3;
+  galaxy.tint = 0x55FFCC;
   addSprite(stage)(galaxy); 
 
-  const layer1 = new Sprite();
-  const layer2 = new Sprite();
-  const invaderArea = new Sprite(); 
-  const buletArea = new Sprite();
-  const rocketArea = new Sprite();
-  const layer3 = new Sprite();
-  const explodingArea = new Sprite();
+  const layer1 = new Container();
+  const layer2 = new Container();
+  const invaderArea = new Container(); 
+  const buletArea = new Container();
+  const rocketArea = new Container();
+  const layer3 = new Container();
+  const explodingArea = new Container();
 
   stage.addChild(buletArea, invaderArea,  rocketArea,  explodingArea, layer1, layer2, layer3);
   
   const areas = {stage, buletArea, invaderArea, rocketArea, explodingArea, layer1, layer2, layer3};
-  
-  const ship = toolSetup(state, asset, areas);
 
-  const underBuilding = () => true;
+  let stillWorking = () => stage.position.x === 0;
+  
+  const ship = toolSetup(state, asset, areas, backToMain, stillWorking);
  
   const scroll = time => {
     galaxy.tilePosition.set(- time / 30, 0)
     
   };
   animationFrames 
-    |> takeWhile(underBuilding)
+    |> takeWhile(stillWorking)
     |> forEach(scroll);
 };
