@@ -6,43 +6,61 @@ html, body {
   position: relative;
 }
 
-canvas {
-  width: 800px;
-  height: 600px;  
-  display: block;
-  margin: 3em auto;
-}
-
-main {
- margin: 1em; 
-}
-
-#react {
+.game-view {
   position: absolute;
   width: 100%;
-  height: auto;
-  background: transparent;
-  top: 300px;
+  height: 100%;
+  top: 0;
   left: 0;
-  text-align: center;
-  color: yellowgreen;
+
+  canvas {
+    width: 100%;
+    height: 100%;
+  }  
+}
+
+#nebula-inspector {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
   pointer-events: none;
-  display: flex;
-  justify-content: center;
+
+  font-family: 'Jura', sans-serif;
 }
 
 // @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Jura:wght@700&display=swap');
 
+.game-size-mock {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 800px;
+  height: 600px;
+  background: darkolivegreen;
+  margin: 3em auto;
+}
 
-.main-menu {
-  font-family: 'Jura', sans-serif;
+.main-menu--wrapper {
+  background: transparent;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  align-self: center;
+  margin-top: 300px;
+  z-index: 1;
+}
+
+.main-menu--button {
+  text-align: center;
+  color: yellowgreen;
   font-size: 1.8em;  
   line-height: 1.6em;
   width: 400px;  
-}
 
-.menu-button {
   pointer-events: all;
   cursor: pointer;
 
@@ -51,3 +69,4 @@ main {
     color: rgb(240, 252, 215);
   }
 }
+

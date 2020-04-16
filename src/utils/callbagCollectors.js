@@ -12,11 +12,18 @@ import wait from "callbag-wait";
 import duration from "callbag-duration-progress";
 import delay from "callbag-delay";
 
-const empty = () => {};
-const always = value => map(() => value);
-const middleware = action => map(value => {action(value); return value});
-const trace = console.log |> middleware;
-const jsonToString = json => {
+export {  
+  fromIter, forEach, take, merge, map, filter,
+  sample, interval, fromEvent, mergeWith, takeWhile,
+  debounce, animationFrames, fromFunction, fromPromise,
+  wait, duration, delay, 
+}
+
+export const empty = () => {};
+export const always = value => map(() => value);
+export const middleware = action => map(value => {action(value); return value});
+export const trace = console.log |> middleware;
+export const jsonToString = json => {
   try {
     return JSON.stringify(json, null, 2);
   } catch(err) {
@@ -24,20 +31,12 @@ const jsonToString = json => {
   }  
 };
 
-const saga = generator => animationFrames
+export const story = generator => animationFrames
   |> sample(fromIter(generator))
   |> takeWhile(isMoving => isMoving)
   |> forEach(_ => {});
 
-const sagaUntil = (until = _ => true) => generator => animationFrames
+export const storyWhile = (until = _ => true) => generator => animationFrames
   |> sample(fromIter(generator))
   |> takeWhile(isMoving => isMoving && until)
   |> forEach(_ => {});
-
-export {
-  empty, always, middleware, trace, jsonToString,
-  fromIter, forEach, take, merge, map, filter,
-  sample, interval, fromEvent, mergeWith, takeWhile,
-  debounce, animationFrames, fromFunction, fromPromise,
-  saga, sagaUntil, wait, duration, delay, 
-}

@@ -10,7 +10,7 @@ import sheetKeys from "./setup/sheetKeys";
 import { allInvaders, enviroment } from "./setup/sheetSets";
 import { easeInOutQuad, easeInOutQuint } from "./utils/easing";
 import { AdjustmentFilter } from '@pixi/filter-adjustment';
-import { saga, sagaUntil } from "./utils/callbagCollectors";
+import { story, storyWhile } from "./utils/callbagCollectors";
 
 function * mantaGoingToDie (manta, explode) {
   manta.tint = 0xAA0000;        
@@ -64,7 +64,7 @@ const enemyFireSetup = (state, asset, areas, getManta) => ({position:{x,y}}, vec
     } catch(err) { yield false };      
   }
 
-  saga(flyingBulet(15));
+  story(flyingBulet(15));
 }
 
 export const smoothTurn = (turnAngle, maxTurning = 1) => {
@@ -109,7 +109,7 @@ const invadersSetup = (state, asset, areas) => ({fireRate, ace, maxSpeed }, getM
     } catch(err) { yield false };
   }
 
-  saga(invaderAttack(2 + Math.random() * maxSpeed));
+  story(invaderAttack(2 + Math.random() * maxSpeed));
 }
 
 const explodeSetup = (state, asset, areas) => ({position}, speed = 1) =>  {
@@ -147,7 +147,7 @@ const fireSetup = (state, asset, areas) => ({position:{x,y}}) => {
     yield false;
   }
 
-  saga(flyingRocket(20));
+  story(flyingRocket(20));
 }
 
 const mantaSetup = (state, asset, areas) => {
@@ -174,7 +174,7 @@ const mantaSetup = (state, asset, areas) => {
     yield false
   }
 
-  saga(mantaIsReadyToAction(5));
+  story(mantaIsReadyToAction(5));
 
   return manta;
 }
@@ -338,5 +338,5 @@ export default (state, asset, stage, backToMain) => ({gap, paralaxWait, ...confi
     yield false;
   }
 
-  saga(handleFinish())  
+  story(handleFinish())  
 }

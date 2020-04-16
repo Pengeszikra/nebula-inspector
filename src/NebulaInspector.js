@@ -122,7 +122,7 @@ export default () => {
       <MenuButton onClick={play(1)}>GAME 1</MenuButton>
       <MenuButton onClick={play(2)}>GAME 2</MenuButton>
       <MenuButton onClick={play(3)}>GAME 3</MenuButton>
-      {/* <MenuButton onClick={play(4)}>BUILDER</MenuButton> */}
+      <MenuButton onClick={play(4)}>BUILDER</MenuButton>
       <MenuButton onClick={exit}>EXIT</MenuButton>
     </MainMenu>
   )

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { render } from "react-dom";
-import NebulaInspector from "./NebulaInspector";
 import "./styles/index.scss";
+import Rework from './Rework';
 
-render(<NebulaInspector />, document.getElementById('react'));
+render(<Rework />, document.getElementById('nebula-inspector'));
