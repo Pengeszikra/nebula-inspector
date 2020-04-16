@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "react-dom";
 import "./styles/index.scss";
-import Rework from './Rework';
+import UseSagaReducerTest from "./UseSagaReducerTest";
 
-render(<Rework />, document.getElementById('nebula-inspector'));
+render(<UseSagaReducerTest />, document.getElementById('nebula-inspector'));

@@ -4,20 +4,13 @@ import { gameOne, gameTwo, gameThree, startBuilder, exitFromGame } from "./gameR
 
 const [MenuWrapper, MenuButton] = divFactory('main-menu--wrapper', 'main-menu--button');
 
-const menuLines = [
-  {title: 'GAME 1',  linkAction: gameOne},
-  {title: 'GAME 2',  linkAction: gameTwo},
-  {title: 'GAME 3',  linkAction: gameThree},
-  {title: 'BUILDER', linkAction: startBuilder},
-  {title: 'EXIT',    linkAction: exitFromGame},
-];
-
-const MenuButtons = ({buttons}) => buttons.map( 
-  ({title, linkAction}, key) => <MenuButton key={key} onClick={linkAction}>{title}</MenuButton>
+const MenuButtons = ({buttons, dispatch}) => buttons.map( 
+  ({title, linkAction}, key) => 
+    <MenuButton key={key} onClick={ _ => linkAction() |> dispatch }>{title}</MenuButton>
 );
-
-export default () => (
+ 
+export default ({menuLines, dispatch}) => (
   <MenuWrapper>
-    <MenuButtons buttons={menuLines} />
+    <MenuButtons buttons={menuLines} dispatch={dispatch} />
   </MenuWrapper>      
 );

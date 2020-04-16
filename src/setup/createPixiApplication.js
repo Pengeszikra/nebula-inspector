@@ -1,9 +1,8 @@
 import {Application, utils} from "pixi.js";
-
-const nil = ()=>{};
+import { empty } from "../utils/callbagCollectors";
 
 export default (config) => {  
-  const {pixiConfig = {}, loaderFrom = nil, getRoot = nil, autoAdd = false} = config;
+  const {pixiConfig = {}, loaderFrom = empty, getRoot = empty, autoAdd = false} = config;
 
   utils.skipHello();  
   const app = new Application(pixiConfig);
