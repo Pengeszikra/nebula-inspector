@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "react-dom";
 import "./styles/index.scss";
-import UseSagaReducerTest from "./UseSagaReducerTest";
+import UseSagaReducerSandbox from "./react-section/UseSagaReducerSandbox";
 
-render(<UseSagaReducerTest />, document.getElementById('nebula-inspector'));
+render(<UseSagaReducerSandbox />, document.getElementById('nebula-inspector'));

@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { divFactory, factory } from "react-slash";
-import gameReducer, {initialState, setOfActions} from "./gameReducer";
-import MainMenu from "./MainMenu";
-import useReducerActions from "./utils/useReducerActions";
-import createPixiApplication from "./setup/createPixiApplication";
-import { nebulaConfig } from "./setup/nebulaConfig";
+import gameReducer, {initialState, setOfActions} from "../react-section/gameReducer";
+import MainMenu from "../react-section/MainMenu";
+import useReducerActions from "../utils/useReducerActions";
+import createPixiApplication from "../setup/createPixiApplication";
+import { nebulaConfig } from "../setup/nebulaConfig";
 
 const [Page] = factory(<main />, 'game-size-mock');
 const [GameView] = factory(<section />, 'game-view');
@@ -31,10 +31,7 @@ export default () => {
         <canvas ref={mount} />
       </GameView>
       <MainMenu menuLines={menuLines} dispatch={dispatch} />
-      <pre>{phase} {`react <- callbag -> pixi
-
-        maybe the use-saga-reduce is a great way to use saga again ?
-      `} </pre>
+      <pre>{phase} {`react <- callbag -> pixi`} </pre>
     </Page>
   );
 };

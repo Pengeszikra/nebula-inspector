@@ -4,8 +4,8 @@ import {
   fromIter, forEach, take, merge, map, filter, 
   sample, interval, fromEvent, mergeWith, takeWhile,
   debounce, animationFrames, fromFunction, fromPromise
-} from "./utils/callbagCollectors";
-import addSprite from "./utils/addSprite";
+} from "../utils/callbagCollectors";
+import addSprite from "../utils/addSprite";
 
 export default (state, asset, stage) => {
   const { galaxy } = asset;

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import createApp from "./setup/createPixiApplication";
+import createApp from "../setup/createPixiApplication";
 import { TilingSprite, Sprite } from "pixi.js";
-import createElements from "./setup/createElements";
-import { nebulaConfig } from "./setup/nebulaConfig";
+import createElements from "../setup/createElements";
+import { nebulaConfig } from "../setup/nebulaConfig";
 import gameReducer, { 
   initialState, splashFadeOut, fireRocket, GAME_OVER, gameOver, 
   ASSET_READY, assetReady, SPLASH_FADE_OUT, nextRound, 
@@ -13,12 +13,12 @@ import {
   fromIter, forEach, take, merge, map, filter,
   sample, interval, fromEvent, mergeWith, takeWhile,
   debounce, animationFrames, fromFunction, fromPromise, wait
-} from "./utils/callbagCollectors";
-import addSprite from "./utils/addSprite";
+} from "../utils/callbagCollectors";
+import addSprite from "../utils/addSprite";
 import { divFactory } from "react-slash";
 import playNebulaInspector from "./playNebulaInspector";
 import levelBuilder from "./levelBuilder";
-import sheetKeys from "./setup/sheetKeys";
+import sheetKeys from "../setup/sheetKeys";
 
 let state = initialState;
 let asset = null;

@@ -1,6 +1,6 @@
 import React from "react";
 import { divFactory } from "react-slash";
-import { gameOne, gameTwo, gameThree, startBuilder, exitFromGame } from "./gameReducer";
+import { gameOne, gameTwo, gameThree, startBuilder, exitFromGame } from "../state-management/gameReducer";
 
 const [MenuWrapper, MenuButton] = divFactory('main-menu--wrapper', 'main-menu--button');
 

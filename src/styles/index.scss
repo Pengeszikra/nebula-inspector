@@ -2,7 +2,6 @@ html, body {
   margin: 0;
   padding: 0;
   background: #333;    
-  color: #AAA;
   position: relative;
 }
 
@@ -25,13 +24,11 @@ html, body {
   height: 100vh;
   top: 0;
   left: 0;
-  pointer-events: none;
-
-  font-family: 'Jura', sans-serif;
+  pointer-events: none; 
 }
 
-// @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Jura:wght@700&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@800&display=swap'); #nebula-inspector { font-family: 'Orbitron', sans-serif; }
+@import url('https://fonts.googleapis.com/css2?family=Jura:wght@700&display=swap'); #nebula-inspector { font-family: 'Jura', sans-serif; }
 
 .game-size-mock {
   display: flex;
@@ -63,10 +60,19 @@ html, body {
 
   pointer-events: all;
   cursor: pointer;
-
+ 
   &:hover {
     background: rgba(0,0,0,.3);
     color: rgb(240, 252, 215);
   }
 }
 
+pre {
+  color: rgb(142, 219, 224);
+  position: absolute;
+  top: 1em;
+  left: 1em;
+  width: calc(100% - 2em);
+  height: 100%;
+  overflow: auto;
+}

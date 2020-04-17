@@ -4,13 +4,13 @@ import {
   fromIter, forEach, take, merge, map, filter, 
   sample, interval, fromEvent, mergeWith, takeWhile,
   debounce, animationFrames, fromFunction, fromPromise, 
-} from "./utils/callbagCollectors";
-import addSprite, { centerPivot } from "./utils/addSprite";
-import sheetKeys from "./setup/sheetKeys";
-import { allInvaders, enviroment } from "./setup/sheetSets";
-import { easeInOutQuad, easeInOutQuint } from "./utils/easing";
+} from "../utils/callbagCollectors";
+import addSprite, { centerPivot } from "../utils/addSprite";
+import sheetKeys from "../setup/sheetKeys";
+import { allInvaders, enviroment } from "../setup/sheetSets";
+import { easeInOutQuad, easeInOutQuint } from "../utils/easing";
 import { AdjustmentFilter } from '@pixi/filter-adjustment';
-import { story, storyWhile } from "./utils/callbagCollectors";
+import { story, storyWhile } from "../utils/callbagCollectors";
 
 function * mantaGoingToDie (manta, explode) {
   manta.tint = 0xAA0000;        

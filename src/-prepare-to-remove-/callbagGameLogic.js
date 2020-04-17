@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { render } from "react-dom";
-import createApp from "./setup/createPixiApplication";
+import createApp from "../setup/createPixiApplication";
 import { TilingSprite, Sprite } from "pixi.js";
-import createElements from "./setup/createElements";
-import { nebulaConfig } from "./setup/nebulaConfig";
+import createElements from "../setup/createElements";
+import { nebulaConfig } from "../setup/nebulaConfig";
 import gameReducer, { 
   initialState, splashFadeOut, fireRocket, GAME_OVER, gameOver, 
   ASSET_READY, assetReady, SPLASH_FADE_OUT, nextRound, 
   gameOne, gameTwo, gameThree, exitFromGame, GAME_ONE, GAME_TWO, GAME_THREE 
-} from "./gameReducer";
+} from "../gameReducer";
 import {
   always, middleware, trace, jsonToString,
   fromIter, forEach, take, merge, map, filter,
   sample, interval, fromEvent, mergeWith, takeWhile,
   debounce, animationFrames, fromFunction, fromPromise
 } from "./utils/callbagHelpers";
-import { deepSet, set } from "./utils/job";
+import { deepSet, set } from "../utils/job";
 import addSprite from "./addSprite";
 import { divFactory } from "react-slash";
 

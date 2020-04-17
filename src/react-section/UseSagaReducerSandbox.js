@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { divFactory, factory } from "react-slash";
-import gameReducer, {initialState, setOfActions, EXIT_FROM_GAME, startBuilder} from "./gameReducer";
-import MainMenu from "./MainMenu";
-import useReducerActions from "./utils/useReducerActions";
-import createPixiApplication from "./setup/createPixiApplication";
-import { nebulaConfig } from "./setup/nebulaConfig";
+import gameReducer, {initialState, setOfActions, EXIT_FROM_GAME, startBuilder} from "./state-management/gameReducer";
+import MainMenu from "./component/MainMenu";
+import useReducerActions from "../utils/useReducerActions";
+import createPixiApplication from "../setup/createPixiApplication";
+import { nebulaConfig } from "../setup/nebulaConfig";
 import useSagaReducer from "use-saga-reducer";
 import { take, put } from 'redux-saga/effects';
 
