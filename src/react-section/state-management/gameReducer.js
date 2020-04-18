@@ -14,6 +14,8 @@ export const [EXIT_FROM_GAME, exitFromGame] = actionCreator('exit-from-game');
 export const [SPLASH_FADE_OUT, splashFadeOut] = actionCreator('splash-fade-out');
 export const [ASSET_READY, assetReady] = actionCreator('asset-ready');
 
+export const [ROAD_TO, roadTo] = actionCreator('road-to');
+
 export default (state, {type, payload}) => {
   switch (type) {
     case ASSET_READY: return {...state, isAssetReady: true};
