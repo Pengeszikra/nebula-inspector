@@ -1,8 +1,8 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add @babel/plugin-preset-env -D
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add callbagH
 
 PATH: 
-  C:\Users\penge\AppData\Local\Temp\yarn--1586777060613-0.29227308184258916;F:\penge\nebula-inspector\node_modules\.bin;C:\Users\penge\AppData\Local\Yarn\Data\link\node_modules\.bin;C:\Program Files\libexec\lib\node_modules\npm\bin\node-gyp-bin;C:\Program Files\lib\node_modules\npm\bin\node-gyp-bin;C:\Program Files\nodejs\node_modules\npm\bin\node-gyp-bin;C:\soft\Git\mingw64\bin;C:\soft\Git\usr\bin;C:\Users\penge\bin;C:\Python38\Scripts;C:\Python38;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\soft\Git\cmd;C:\ProgramData\chocolatey\bin;C:\ProgramData\nvm;C:\Program Files\nodejs;C:\Program Files (x86)\Yarn\bin;C:\Users\penge\AppData\Local\Microsoft\WindowsApps;C:\soft\vscode\bin;C:\Users\penge\AppData\Local\Yarn\bin
+  C:\Users\penge\AppData\Local\Temp\yarn--1587304861549-0.6648967820803202;F:\penge\nebula-inspector\node_modules\.bin;C:\Users\penge\AppData\Local\Yarn\Data\link\node_modules\.bin;C:\Program Files\libexec\lib\node_modules\npm\bin\node-gyp-bin;C:\Program Files\lib\node_modules\npm\bin\node-gyp-bin;C:\Program Files\nodejs\node_modules\npm\bin\node-gyp-bin;C:\soft\Git\mingw64\bin;C:\soft\Git\usr\bin;C:\Users\penge\bin;C:\Python38\Scripts;C:\Python38;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\soft\Git\cmd;C:\ProgramData\chocolatey\bin;C:\ProgramData\nvm;C:\Program Files\nodejs;C:\Program Files (x86)\Yarn\bin;C:\Users\penge\AppData\Local\Microsoft\WindowsApps;C:\soft\vscode\bin;C:\Users\penge\AppData\Local\Yarn\bin
 
 Yarn version: 
   1.22.0
@@ -14,7 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@babel%2fplugin-preset-env: Not found
+  Error: https://registry.yarnpkg.com/callbagH: Not found
       at Request.params.callback [as _callback] (C:\Program Files (x86)\Yarn\lib\cli.js:66084:18)
       at Request.self.callback (C:\Program Files (x86)\Yarn\lib\cli.js:140727:22)
       at Request.emit (events.js:315:20)
@@ -66,23 +66,30 @@ npm manifest:
       "sass": "^1.26.3"
     },
     "dependencies": {
+      "@pixi/filter-adjustment": "^3.1.1",
       "callbag-animation-frames": "^2.1.0",
       "callbag-basics": "^3.2.0",
+      "callbag-buffer": "^1.0.0",
       "callbag-debounce": "^2.1.2",
+      "callbag-delay": "^0.1.0",
       "callbag-duration-progress": "^2.0.0",
       "callbag-from-event": "^1.3.0",
       "callbag-from-function": "^2.1.0",
       "callbag-from-promise": "^1.3.0",
       "callbag-interval": "^1.1.0",
+      "callbag-last": "^1.1.4",
       "callbag-merge-with": "^1.0.3",
       "callbag-sample": "^2.0.0",
       "callbag-take-while": "^2.0.0",
       "callbag-timer": "^1.0.0",
-      "pixi": "^0.3.1",
+      "callbag-wait": "^2.1.0",
       "pixi.js": "^5.2.1",
       "react": "^16.13.1",
       "react-dom": "^16.13.1",
-      "react-slash": "^0.8.3"
+      "react-slash": "^0.8.3",
+      "red": "^0.0.0",
+      "redux-saga": "^1.1.3",
+      "use-saga-reducer": "^3.0.0"
     }
   }
 
@@ -890,7 +897,7 @@ Lockfile:
       "@babel/types" "^7.4.4"
       esutils "^2.0.2"
   
-  "@babel/runtime@^7.4.4", "@babel/runtime@^7.8.4":
+  "@babel/runtime@^7.4.4", "@babel/runtime@^7.6.3", "@babel/runtime@^7.8.4":
     version "7.9.2"
     resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.9.2.tgz#d90df0583a3a252f09aaa619665367bae518db06"
     integrity sha512-NE2DtOdufG7R5vnfQUTehdTfNycfUANEtCa9PssN9O/xmTzP4E08UI797ixaei6hBEVL9BI/PsdJS5x7mWoB9Q==
@@ -1226,6 +1233,11 @@ Lockfile:
       "@pixi/math" "5.2.1"
       "@pixi/utils" "5.2.1"
   
+  "@pixi/filter-adjustment@^3.1.1":
+    version "3.1.1"
+    resolved "https://registry.yarnpkg.com/@pixi/filter-adjustment/-/filter-adjustment-3.1.1.tgz#2aa41048106fa2006648deae59813bfb55c8fe54"
+    integrity sha512-N+qbkofBn5tiGn2Ubg52AEoPOM69VIO5TEHsBtm5oh2S4m/rb6FnnqPji/FzwK89iLvtYmJdbwWAYi87PWnE3Q==
+  
   "@pixi/filter-alpha@5.2.1":
     version "5.2.1"
     resolved "https://registry.yarnpkg.com/@pixi/filter-alpha/-/filter-alpha-5.2.1.tgz#b7a403d9ef7dc61de1960888cde5a1d59ac99bab"
@@ -1484,6 +1496,50 @@ Lockfile:
       earcut "^2.1.5"
       eventemitter3 "^3.1.0"
       url "^0.11.0"
+  
+  "@redux-saga/core@^1.1.3":
+    version "1.1.3"
+    resolved "https://registry.yarnpkg.com/@redux-saga/core/-/core-1.1.3.tgz#3085097b57a4ea8db5528d58673f20ce0950f6a4"
+    integrity sha512-8tInBftak8TPzE6X13ABmEtRJGjtK17w7VUs7qV17S8hCO5S3+aUTWZ/DBsBJPdE8Z5jOPwYALyvofgq1Ws+kg==
+    dependencies:
+      "@babel/runtime" "^7.6.3"
+      "@redux-saga/deferred" "^1.1.2"
+      "@redux-saga/delay-p" "^1.1.2"
+      "@redux-saga/is" "^1.1.2"
+      "@redux-saga/symbols" "^1.1.2"
+      "@redux-saga/types" "^1.1.0"
+      redux "^4.0.4"
+      typescript-tuple "^2.2.1"
+  
+  "@redux-saga/deferred@^1.1.2":
+    version "1.1.2"
+    resolved "https://registry.yarnpkg.com/@redux-saga/deferred/-/deferred-1.1.2.tgz#59937a0eba71fff289f1310233bc518117a71888"
+    integrity sha512-908rDLHFN2UUzt2jb4uOzj6afpjgJe3MjICaUNO3bvkV/kN/cNeI9PMr8BsFXB/MR8WTAZQq/PlTq8Kww3TBSQ==
+  
+  "@redux-saga/delay-p@^1.1.2":
+    version "1.1.2"
+    resolved "https://registry.yarnpkg.com/@redux-saga/delay-p/-/delay-p-1.1.2.tgz#8f515f4b009b05b02a37a7c3d0ca9ddc157bb355"
+    integrity sha512-ojc+1IoC6OP65Ts5+ZHbEYdrohmIw1j9P7HS9MOJezqMYtCDgpkoqB5enAAZrNtnbSL6gVCWPHaoaTY5KeO0/g==
+    dependencies:
+      "@redux-saga/symbols" "^1.1.2"
+  
+  "@redux-saga/is@^1.1.2":
+    version "1.1.2"
+    resolved "https://registry.yarnpkg.com/@redux-saga/is/-/is-1.1.2.tgz#ae6c8421f58fcba80faf7cadb7d65b303b97e58e"
+    integrity sha512-OLbunKVsCVNTKEf2cH4TYyNbbPgvmZ52iaxBD4I1fTif4+MTXMa4/Z07L83zW/hTCXwpSZvXogqMqLfex2Tg6w==
+    dependencies:
+      "@redux-saga/symbols" "^1.1.2"
+      "@redux-saga/types" "^1.1.0"
+  
+  "@redux-saga/symbols@^1.1.2":
+    version "1.1.2"
+    resolved "https://registry.yarnpkg.com/@redux-saga/symbols/-/symbols-1.1.2.tgz#216a672a487fc256872b8034835afc22a2d0595d"
+    integrity sha512-EfdGnF423glv3uMwLsGAtE6bg+R9MdqlHEzExnfagXPrIiuxwr3bdiAwz3gi+PsrQ3yBlaBpfGLtDG8rf3LgQQ==
+  
+  "@redux-saga/types@^1.1.0":
+    version "1.1.0"
+    resolved "https://registry.yarnpkg.com/@redux-saga/types/-/types-1.1.0.tgz#0e81ce56b4883b4b2a3001ebe1ab298b84237204"
+    integrity sha512-afmTuJrylUU/0OtqzaRkbyYFFNgCF73Bvel/sw90pvGrWIZ+vyoIJqA6eMSoA6+nb443kTmulmBtC9NerXboNg==
   
   "@sinonjs/commons@^1.7.0":
     version "1.7.2"
@@ -2169,6 +2225,11 @@ Lockfile:
       callbag-skip "1"
       callbag-take "1"
   
+  callbag-buffer@^1.0.0:
+    version "1.0.0"
+    resolved "https://registry.yarnpkg.com/callbag-buffer/-/callbag-buffer-1.0.0.tgz#797f07b781591f03821e3c7ed0ddf837d128238b"
+    integrity sha512-o2QIDeWbwSoBxI7oC9WABNRX38J4N+oCH9vbAvte1jssbie/kaRG/X4fBeGoMsocR4wYNk23NTn3DMqY+C5fgA==
+  
   callbag-combine@1:
     version "1.2.0"
     resolved "https://registry.yarnpkg.com/callbag-combine/-/callbag-combine-1.2.0.tgz#72628d05f7208d720a29fe1be7ff6fdc221d67df"
@@ -2205,6 +2266,11 @@ Lockfile:
       callbag "^1.2.0"
       callbag-flatten "^1.4.0"
       callbag-lazy "^2.0.1"
+  
+  callbag-delay@^0.1.0:
+    version "0.1.0"
+    resolved "https://registry.yarnpkg.com/callbag-delay/-/callbag-delay-0.1.0.tgz#8a036a70942e614a347d0ce413c7f0b0e7641602"
+    integrity sha512-zGef76kRirh9OVjzA11qqUJ/AYFrkN7nSfP2cXSslrE6NSFmo20ywVedtEcilsmFaMobpaSsTDcRbyYADiUTgg==
   
   callbag-duration-progress@^2.0.0:
     version "2.0.0"
@@ -2277,6 +2343,11 @@ Lockfile:
     integrity sha512-xkYj7t/l9+GaP0kvPi6LadF3ZNSiQAhbEzwnnTrDB/UtkBCrzKPZ9Kiti8P8oHYxL2jGEuRWi86PD3uM7qXLbg==
     dependencies:
       callbag "^1.1.0"
+  
+  callbag-last@^1.1.4:
+    version "1.1.4"
+    resolved "https://registry.yarnpkg.com/callbag-last/-/callbag-last-1.1.4.tgz#45856001bb90a153dc5b0af93af4251c1e2b68f5"
+    integrity sha512-LZNre5ADJq9Prwumw1rPMnex3lUzUQCXFUVuJMKMqzs9OvNgpMPf6ZJkPn9YR944tp5X35KP1Nn0mqokHHN0TA==
   
   callbag-lazy@^2.0.1:
     version "2.0.1"
@@ -2374,7 +2445,14 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/callbag-timer/-/callbag-timer-1.0.0.tgz#076f720ebbbf5aeff6d6a987aefe865b43ebdae9"
     integrity sha512-iLmp08Q2b8O1VlGaYj7WCG8iQUHla7lRBmF4yg0IXjMiYW2nDwWyI5tzgPExlTAsAy+USu9V7gC+eZSqqjRQCg==
   
-  callbag@1, callbag@^1.1.0, callbag@^1.2.0:
+  callbag-wait@^2.1.0:
+    version "2.1.0"
+    resolved "https://registry.yarnpkg.com/callbag-wait/-/callbag-wait-2.1.0.tgz#deab72970c565d40f1a86051eb517cf469fa7100"
+    integrity sha512-r+4hRsycJpoDWQN5rFYLbWKDVafnHlcPbiJN2aqzpeFDS7ZdMOPK6pCs56UZjYN0fQkAff1PoDBbtAoaobO2Dg==
+    dependencies:
+      callbag "~1.2.0"
+  
+  callbag@1, callbag@^1.1.0, callbag@^1.2.0, callbag@~1.2.0:
     version "1.2.0"
     resolved "https://registry.yarnpkg.com/callbag/-/callbag-1.2.0.tgz#45e73962a466056c6e5f86f5627b35cf0c4df101"
     integrity sha512-RMcVOk2oyA8CyCt/HsLEvnvvttKlaGVaG0uOo5IY7RpdiPLhStjxv5oYre33VJfT8kJE+cuKLSNHooz7yCUdhQ==
@@ -2660,6 +2738,11 @@ Lockfile:
     version "2.20.3"
     resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
     integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
+  
+  commander@~2.1.0:
+    version "2.1.0"
+    resolved "https://registry.yarnpkg.com/commander/-/commander-2.1.0.tgz#d121bbae860d9992a3d517ba96f56588e47c6781"
+    integrity sha1-0SG7roYNmZKj1Re6lvVliOR8Z4E=
   
   component-emitter@^1.2.1:
     version "1.3.0"
@@ -3450,6 +3533,11 @@ Lockfile:
     version "3.1.2"
     resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-3.1.2.tgz#2d3d48f9c346698fce83a85d7d664e98535df6e7"
     integrity sha512-tvtQIeLVHjDkJYnzf2dgVMxfuSGJeM/7UCG17TT4EumTfNtF+0nebF/4zWOIkCreAbtNqhGEboB6BWrwqNaw4Q==
+  
+  eventreactor@0.0.x:
+    version "0.0.6"
+    resolved "https://registry.yarnpkg.com/eventreactor/-/eventreactor-0.0.6.tgz#3b51b424e30db097c9c30e49c3038bef2cd9de22"
+    integrity sha1-O1G0JOMNsJfJww5JwwOL7yzZ3iI=
   
   events@^3.0.0:
     version "3.1.0"
@@ -5347,6 +5435,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.0.tgz#7818f722027b2459a86f0295d434d1fc2336c52c"
     integrity sha512-INOFj37C7k3AfaNTtX8RhsTw7qRy7eLET14cROi9+5HAVbbHuIWUHEauBv5qT4Av2tWasiTY1Jw6puUNqRJXQg==
   
+  nan@~1.0.0:
+    version "1.0.0"
+    resolved "https://registry.yarnpkg.com/nan/-/nan-1.0.0.tgz#ae24f8850818d662fcab5acf7f3b95bfaa2ccf38"
+    integrity sha1-riT4hQgY1mL8q1rPfzuVv6oszzg=
+  
   nanomatch@^1.2.9:
     version "1.2.13"
     resolved "https://registry.yarnpkg.com/nanomatch/-/nanomatch-1.2.13.tgz#b87a8aa4fc0de8fe6be88895b38983ff265bd119"
@@ -5609,6 +5702,11 @@ Lockfile:
       prelude-ls "~1.1.2"
       type-check "~0.3.2"
       word-wrap "~1.2.3"
+  
+  options@>=0.0.5:
+    version "0.0.6"
+    resolved "https://registry.yarnpkg.com/options/-/options-0.0.6.tgz#ec22d312806bb53e731773e7cdaefcf1c643128f"
+    integrity sha1-7CLTEoBrtT5zF3Pnza788cZDEo8=
   
   ora@^2.1.0:
     version "2.1.0"
@@ -5943,11 +6041,6 @@ Lockfile:
       "@pixi/text-bitmap" "5.2.1"
       "@pixi/ticker" "5.2.1"
       "@pixi/utils" "5.2.1"
-  
-  pixi@^0.3.1:
-    version "0.3.1"
-    resolved "https://registry.yarnpkg.com/pixi/-/pixi-0.3.1.tgz#858cd6164a32a1e4b41192cdf5c6d98209300ba8"
-    integrity sha1-hYzWFkoyoeS0EZLN9cbZggkwC6g=
   
   pkg-dir@^4.2.0:
     version "4.2.0"
@@ -6558,6 +6651,36 @@ Lockfile:
     version "2.0.0"
     resolved "https://registry.yarnpkg.com/realpath-native/-/realpath-native-2.0.0.tgz#7377ac429b6e1fd599dc38d08ed942d0d7beb866"
     integrity sha512-v1SEYUOXXdbBZK8ZuNgO4TBjamPsiSgcFr0aP+tEKpQZK8vooEUqV6nm6Cv502mX4NF2EfsnVqtNAHG+/6Ur1Q==
+  
+  red@^0.0.0:
+    version "0.0.0"
+    resolved "https://registry.yarnpkg.com/red/-/red-0.0.0.tgz#a365c6221741e06032f7df5d6bf62ddf39058eea"
+    integrity sha1-o2XGIhdB4GAy999da/Yt3zkFjuo=
+    dependencies:
+      eventreactor "0.0.x"
+      redis "0.7.x"
+      underscore "1.3.x"
+      ws "0.4.x"
+  
+  redis@0.7.x:
+    version "0.7.3"
+    resolved "https://registry.yarnpkg.com/redis/-/redis-0.7.3.tgz#ee57b7a44d25ec1594e44365d8165fa7d1d4811a"
+    integrity sha1-7le3pE0l7BWU5ENl2BZfp9HUgRo=
+  
+  redux-saga@^1.1.3:
+    version "1.1.3"
+    resolved "https://registry.yarnpkg.com/redux-saga/-/redux-saga-1.1.3.tgz#9f3e6aebd3c994bbc0f6901a625f9a42b51d1112"
+    integrity sha512-RkSn/z0mwaSa5/xH/hQLo8gNf4tlvT18qXDNvedihLcfzh+jMchDgaariQoehCpgRltEm4zHKJyINEz6aqswTw==
+    dependencies:
+      "@redux-saga/core" "^1.1.3"
+  
+  redux@^4.0.4:
+    version "4.0.5"
+    resolved "https://registry.yarnpkg.com/redux/-/redux-4.0.5.tgz#4db5de5816e17891de8a80c424232d06f051d93f"
+    integrity sha512-VSz1uMAH24DM6MF72vcojpYPtrTUu3ByVWfPL1nPfVRb5mZVTve5GnNCUV53QM/BZ66xfWrm0CTWoM+Xlz8V1w==
+    dependencies:
+      loose-envify "^1.4.0"
+      symbol-observable "^1.2.0"
   
   regenerate-unicode-properties@^8.2.0:
     version "8.2.0"
@@ -7486,6 +7609,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/tiny-inflate/-/tiny-inflate-1.0.3.tgz#122715494913a1805166aaf7c93467933eea26c4"
     integrity sha512-pkY1fj1cKHb2seWDy0B16HeWyczlJA9/WW3u3c4z/NiWDsO3DOU5D7nhTLE9CF0yXv/QZFY7sEJmj24dK+Rrqw==
   
+  tinycolor@0.x:
+    version "0.0.1"
+    resolved "https://registry.yarnpkg.com/tinycolor/-/tinycolor-0.0.1.tgz#320b5a52d83abb5978d81a3e887d4aefb15a6164"
+    integrity sha1-MgtaUtg6u1l42Bo+iH1K77FaYWQ=
+  
   tmp@^0.0.33:
     version "0.0.33"
     resolved "https://registry.yarnpkg.com/tmp/-/tmp-0.0.33.tgz#6d34335889768d21b2bcda0aa277ced3b1bfadf9"
@@ -7630,6 +7758,25 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
     integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
   
+  typescript-compare@^0.0.2:
+    version "0.0.2"
+    resolved "https://registry.yarnpkg.com/typescript-compare/-/typescript-compare-0.0.2.tgz#7ee40a400a406c2ea0a7e551efd3309021d5f425"
+    integrity sha512-8ja4j7pMHkfLJQO2/8tut7ub+J3Lw2S3061eJLFQcvs3tsmJKp8KG5NtpLn7KcY2w08edF74BSVN7qJS0U6oHA==
+    dependencies:
+      typescript-logic "^0.0.0"
+  
+  typescript-logic@^0.0.0:
+    version "0.0.0"
+    resolved "https://registry.yarnpkg.com/typescript-logic/-/typescript-logic-0.0.0.tgz#66ebd82a2548f2b444a43667bec120b496890196"
+    integrity sha512-zXFars5LUkI3zP492ls0VskH3TtdeHCqu0i7/duGt60i5IGPIpAHE/DWo5FqJ6EjQ15YKXrt+AETjv60Dat34Q==
+  
+  typescript-tuple@^2.2.1:
+    version "2.2.1"
+    resolved "https://registry.yarnpkg.com/typescript-tuple/-/typescript-tuple-2.2.1.tgz#7d9813fb4b355f69ac55032e0363e8bb0f04dad2"
+    integrity sha512-Zcr0lbt8z5ZdEzERHAMAniTiIKerFCMgd7yjq1fPnDJ43et/k9twIFQMUYff9k5oXcsQ0WpvFcgzK2ZKASoW6Q==
+    dependencies:
+      typescript-compare "^0.0.2"
+  
   uncss@^0.17.2:
     version "0.17.3"
     resolved "https://registry.yarnpkg.com/uncss/-/uncss-0.17.3.tgz#50fc1eb4ed573ffff763458d801cd86e4d69ea11"
@@ -7644,6 +7791,11 @@ Lockfile:
       postcss "^7.0.17"
       postcss-selector-parser "6.0.2"
       request "^2.88.0"
+  
+  underscore@1.3.x:
+    version "1.3.3"
+    resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.3.3.tgz#47ac53683daf832bfa952e1774417da47817ae42"
+    integrity sha1-R6xTaD2vgyv6lS4XdEF9pHgXrkI=
   
   unicode-canonical-property-names-ecmascript@^1.0.4:
     version "1.0.4"
@@ -7733,6 +7885,11 @@ Lockfile:
     dependencies:
       punycode "1.3.2"
       querystring "0.2.0"
+  
+  use-saga-reducer@^3.0.0:
+    version "3.0.0"
+    resolved "https://registry.yarnpkg.com/use-saga-reducer/-/use-saga-reducer-3.0.0.tgz#d2230001424621889409a499058cfb49915e6c52"
+    integrity sha512-uVrFbNmV/ZzCsll18oK8MWk8iDrmnGKcHGNfQ+6ARN7AIxnqjIOeEFEMO1X/kRvuFY5QxtlFO1bfVpSUNfTRPQ==
   
   use@^3.1.0:
     version "3.1.1"
@@ -7942,6 +8099,16 @@ Lockfile:
     integrity sha512-/lg70HAjtkUgWPVZhZcm+T4hkL8Zbtp1nFNOn3lRrxnlv50SRBv7cR7RqR+GMsd3hUXy9hWBo4CHTbFTcOYwig==
     dependencies:
       mkdirp "^0.5.1"
+  
+  ws@0.4.x:
+    version "0.4.32"
+    resolved "https://registry.yarnpkg.com/ws/-/ws-0.4.32.tgz#787a6154414f3c99ed83c5772153b20feb0cec32"
+    integrity sha1-eHphVEFPPJntg8V3IVOyD+sM7DI=
+    dependencies:
+      commander "~2.1.0"
+      nan "~1.0.0"
+      options ">=0.0.5"
+      tinycolor "0.x"
   
   ws@^5.1.1:
     version "5.2.2"

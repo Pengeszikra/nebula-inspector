@@ -58,3 +58,5 @@ export const initialState = {
     {title: 'EXIT',    linkAction: exitFromGame},
   ],
 };
+
+export const getPhase = state => state.phase;

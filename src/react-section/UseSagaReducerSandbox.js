@@ -31,12 +31,9 @@ export default () => {
   return (
     <Page>
       <div ref={mount} className="game-view" />
-      <MainMenu menuLines={menuLines} dispatch={dispatch} />
-
-      <pre id="debug">{`phase: ${phase}\n\nasset: \n\t${asset && Object.keys(asset).join('\n\t')}
-        
-        now lets prove of useSagaReducer is worth or not
-      `} </pre>
+      {phase === 'main' && <MainMenu menuLines={menuLines} dispatch={dispatch} />}
     </Page>
   );
 };
+
+// <pre id="debug">{`phase: ${phase}\n\nasset: \n\t${asset && Object.keys(asset).join('\n\t')}`} </pre>
