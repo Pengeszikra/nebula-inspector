@@ -9,9 +9,9 @@ import useSagaReducer from "use-saga-reducer";
 import { rootSaga } from "./state-management/rootSaga";
 
 const [Page] = factory(<main />, 'game-size-mock');
+const [ScoreBoard] = divFactory('score-board');
 
 export default () => {
-  const [asset, setAsset] = useState(null);
   const [state, dispatch] = useSagaReducer(rootSaga, gameReducer, initialState);
   const mount = useRef(null);
       
@@ -19,21 +19,19 @@ export default () => {
     const getRoot = () => mount.current;
     const {app, assetsLoaded} = createPixiApplication({...nebulaConfig, getRoot});
     assetsLoaded.then(({resources}) => {
-      setAsset(resources);
       assetReady({app, resources}) |> dispatch;
     });
   };
   
   useEffect(dispatch |> initialize, [mount]);
     
-  const {menuLines, phase} = state;
+  const {menuLines, phase, isGamePlay, score} = state;
 
   return (
     <Page>
       <div ref={mount} className="game-view" />
       {phase === 'main' && <MainMenu menuLines={menuLines} dispatch={dispatch} />}
+      {isGamePlay && <ScoreBoard>{score}</ScoreBoard>}
     </Page>
   );
 };
-
-// <pre id="debug">{`phase: ${phase}\n\nasset: \n\t${asset && Object.keys(asset).join('\n\t')}`} </pre>

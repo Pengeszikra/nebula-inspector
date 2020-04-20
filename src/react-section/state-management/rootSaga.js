@@ -17,9 +17,12 @@ export function * rootSaga () {
   const {app, asset, resources} = yield call(assetSaga);
   const {stage} = app;
 
-  const layers = layersFactory(5, stage);
+  const layers = layersFactory(5);
   const [ splashArea, mainArea, gameArea, finishArea, builderArea ] = layers;
-  for(let layer of layers) layer.visible = false;
+  for(let layer of layers) {
+    layer.visible = false;
+    stage.addChild(layer);
+  };
   const layersObject = { splashArea, mainArea, gameArea, finishArea, builderArea };
  
   yield all([

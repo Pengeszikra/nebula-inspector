@@ -131,6 +131,8 @@ const fireSetup = (state, asset, areas) => ({position:{x,y}}) => {
   const rocket = addSprite(rocketArea, true)(sheet.rocket, x, y, .5);
   const explode = explodeSetup(state, asset, areas);
 
+  console.log('-- fireSetup --', x, y)
+
   function * flyingRocket(speed) {
     while(rocket.position.x < 850) {
       rocket.position.x += speed;

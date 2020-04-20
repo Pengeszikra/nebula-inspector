@@ -23,9 +23,9 @@ export default (state, {type, payload}) => {
     case GAME_ONE: return {...state, phase: GAME_ONE, isGamePlay: true };
     case GAME_TWO: return {...state, phase: GAME_TWO, isGamePlay: true };
     case GAME_THREE: return {...state, phase: GAME_THREE, isGamePlay: true };
-    case GAME_OVER: return {...state, phase: 'main', isGamePlay: false };
+    case GAME_OVER: return {...state, phase: 'final', isGamePlay: false };
     case START_BUILDER: return {...state, phase: 'builder', isGamePlay: false};
-    case EXIT_FROM_GAME: return {...state, phase: 'final', isGamePlay: false};
+    // case EXIT_FROM_GAME: return {...state, phase: 'main', isGamePlay: false};
 
     default: return state;
   }
@@ -50,6 +50,7 @@ export const initialState = {
   isAssetReady: false,
   isGamePlay: false,
   gameVersion: 0,
+  score: 0,
   menuLines : [
     {title: 'GAME 1',  linkAction: gameOne},
     {title: 'GAME 2',  linkAction: gameTwo},

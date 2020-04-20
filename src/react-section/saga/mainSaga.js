@@ -1,7 +1,7 @@
-import { take } from 'redux-saga/effects';
+import { take, race } from 'redux-saga/effects';
 import animationFrames from 'callbag-animation-frames';
 import { forEach, takeWhile, filter } from '../../utils/callbagCollectors';
-import { ROAD_TO, SPLASH_FADE_OUT } from '../state-management/gameReducer';
+import { ROAD_TO, SPLASH_FADE_OUT, GAME_ONE, GAME_TWO, GAME_THREE, START_BUILDER, EXIT_FROM_GAME } from '../state-management/gameReducer';
 
 let scrolling = false;
 
@@ -23,6 +23,13 @@ export default function * mainSaga(mainArea, asset) {
   yield take(SPLASH_FADE_OUT);
   mainArea.visible = true;
   scrolling = true;  
-  yield take(ROAD_TO);
+  yield race([
+    take(GAME_ONE),
+    take(GAME_TWO),
+    take(GAME_THREE),
+    take(START_BUILDER),
+    take(EXIT_FROM_GAME),
+  ]);
+  
   scrolling = false;
 }
