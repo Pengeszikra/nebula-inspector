@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, forwardRef } from "react";
 import { divFactory, factory } from "react-slash";
-import gameReducer, {initialState, setOfActions, assetReady} from "./state-management/gameReducer";
+import gameReducer, {initialState, setOfActions, assetReady, saveDispatch} from "./state-management/gameReducer";
 import MainMenu from "./component/MainMenu";
 import useReducerActions from "../utils/useReducerActions";
 import createPixiApplication from "../setup/createPixiApplication";
@@ -20,6 +20,7 @@ export default () => {
     const {app, assetsLoaded} = createPixiApplication({...nebulaConfig, getRoot});
     assetsLoaded.then(({resources}) => {
       assetReady({app, resources}) |> dispatch;
+      saveDispatch(dispatch) |> dispatch;
     });
   };
   
@@ -31,7 +32,7 @@ export default () => {
     <Page>
       <div ref={mount} className="game-view" />
       {phase === 'main' && <MainMenu menuLines={menuLines} dispatch={dispatch} />}
-      {isGamePlay && <ScoreBoard>{score}</ScoreBoard>}
+      {isGamePlay && <ScoreBoard>SCORE: {score}</ScoreBoard>}
     </Page>
   );
 };

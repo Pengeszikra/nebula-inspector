@@ -11,6 +11,7 @@ import { allInvaders, enviroment } from "../setup/sheetSets";
 import { easeInOutQuad, easeInOutQuint } from "../utils/easing";
 import { AdjustmentFilter } from '@pixi/filter-adjustment';
 import { story, storyWhile } from "../utils/callbagCollectors";
+import layersFactory from "../utils/layersFactory";
 
 function * mantaGoingToDie (manta, explode) {
   manta.tint = 0xAA0000;        
@@ -130,8 +131,9 @@ const fireSetup = (state, asset, areas) => ({position:{x,y}}) => {
   const {sheet} = asset;
   const rocket = addSprite(rocketArea, true)(sheet.rocket, x, y, .5);
   const explode = explodeSetup(state, asset, areas);
+  const {earnScore} = state;
 
-  console.log('-- fireSetup --', x, y)
+  console.log(earnScore + [])
 
   function * flyingRocket(speed) {
     while(rocket.position.x < 850) {
@@ -139,6 +141,7 @@ const fireSetup = (state, asset, areas) => ({position:{x,y}}) => {
       for (let invader of invaderArea.children) {
         if (rocket.containsPoint(invader.position)) {
           explode(invader, 0.5);
+          earnScore(10);
           invader.destroy();
         }
       }
@@ -158,22 +161,23 @@ const mantaSetup = (state, asset, areas) => {
   const explode = explodeSetup(state, asset, areas);
 
   const {sheet} = asset;
-  const manta = addSprite(playerArea, true)(sheet.manta, -500, 250, .4);
+  const manta = addSprite(stage, true)(sheet.manta, -500, 250, .4);
     
   const maneuver = ({data:{global:{x, y}}}) => manta.position.set(x, y);
 
   function * mantaIsReadyToAction (speed) {
     while(manta.position.x < 100) {      
-      manta.position.x += speed
-      yield true
+      manta.position.x += speed;
+      yield true;
     }
+
+    stage.interactive = true;
+    stage.on('mousemove', maneuver);
     manta.interactive = true;
     manta.buttonMode = true;
     manta.cursor = 'none';
-    manta.on('pointerdown', () => fire(manta))
-    stage.interactive = true;
-    stage.on('mousemove', maneuver);
-    yield false
+    manta.on('pointerup', () => fire(manta));    
+    yield false;    
   }
 
   story(mantaIsReadyToAction(5));
@@ -211,31 +215,15 @@ const galaxyFadeIn = (stage, newGalaxy) => {
 
 export default (state, asset, stage, backToMain) => ({gap, paralaxWait, ...config}) => {  
   const { newGalaxy } = asset;
+   
+  const galaxy = galaxyFadeIn(stage, newGalaxy);
 
-  const gameArea = new Container();
-  stage.addChild(gameArea);
-    
-  const galaxy = galaxyFadeIn(gameArea, newGalaxy);
+  const layers = layersFactory(8);
+  const [layer1, layer2, buletArea, invaderArea, rocketArea, playerArea, explodingArea, layer3] = layers;
+  layers.forEach(layer => stage.addChild(layer));
 
-  const playerArea = new Container();
-  const invaderArea = new Container(); 
-  const buletArea = new Container();
-  const rocketArea = new Container();
-  const explodingArea = new Container();
-  const layer1 = new Container();
-  const layer2 = new Container();
-  const layer3 = new Container();  
   
-  gameArea.addChild(layer1);
-  gameArea.addChild(layer2);
-  gameArea.addChild(buletArea);
-  gameArea.addChild(invaderArea);  
-  gameArea.addChild(rocketArea);
-  gameArea.addChild(playerArea);
-  gameArea.addChild(explodingArea);
-  gameArea.addChild(layer3);
-
-  const areas = {stage:gameArea, buletArea, invaderArea, rocketArea, explodingArea, playerArea};
+  const areas = {stage, buletArea, invaderArea, rocketArea, explodingArea, playerArea};
   
   const ship = mantaSetup(state, asset, areas);
   const getShip = () => ship;
@@ -332,10 +320,9 @@ export default (state, asset, stage, backToMain) => ({gap, paralaxWait, ...confi
     while (stillPlay()) {
       yield true;
     }
-    console.log('---> back to main <---');
     yield true
-    gameArea.position.set(-1000, -1000);
-    gameArea.visible = false;
+    // stage.position.set(-1000, -1000);
+    // stage.visible = false;
     backToMain();
     yield false;
   }

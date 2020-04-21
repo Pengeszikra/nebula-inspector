@@ -24,7 +24,6 @@ html, body {
   height: 100vh;
   top: 0;
   left: 0;
-  pointer-events: none; 
 }
 
 // @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@800&display=swap'); #nebula-inspector { font-family: 'Orbitron', sans-serif; }
@@ -49,6 +48,7 @@ html, body {
   align-self: center;
   margin-top: 300px;
   z-index: 1;
+  user-select: none;
 }
 
 .main-menu--button {
@@ -59,6 +59,7 @@ html, body {
   width: 400px;  
 
   pointer-events: all;
+  
   cursor: pointer;
  
   &:hover {
@@ -75,4 +76,15 @@ pre {
   width: calc(100% - 2em);
   height: 100%;
   overflow: auto;
+}
+
+.score-board {
+  pointer-events: none;
+  user-select: none;
+  color: yellowgreen;
+  font-size: 1.8em;  
+  line-height: 1.6em;
+  z-index: 1;
+  text-align: center;
+  width: 100%;  
 }

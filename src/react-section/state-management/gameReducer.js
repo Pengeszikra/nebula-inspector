@@ -1,4 +1,5 @@
 import { actionCreator } from "react-slash";
+import { empty } from "../../utils/callbagCollectors";
 
 export const [NEXT_ROUND, nextRound] = actionCreator('next-round');
 export const [GAME_OVER, gameOver] = actionCreator('game-over');
@@ -10,6 +11,8 @@ export const [GAME_TWO, gameTwo] = actionCreator('game-two');
 export const [GAME_THREE, gameThree] = actionCreator('game-three');
 export const [START_BUILDER, startBuilder] = actionCreator('start-builder');
 export const [EXIT_FROM_GAME, exitFromGame] = actionCreator('exit-from-game');
+export const [TAKE_SCORE, takeScore] = actionCreator('take-score');
+export const [SAVE_DISPATCH, saveDispatch] = actionCreator('save-dispatch');
 
 export const [SPLASH_FADE_OUT, splashFadeOut] = actionCreator('splash-fade-out');
 export const [ASSET_READY, assetReady] = actionCreator('asset-ready');
@@ -25,7 +28,9 @@ export default (state, {type, payload}) => {
     case GAME_THREE: return {...state, phase: GAME_THREE, isGamePlay: true };
     case GAME_OVER: return {...state, phase: 'final', isGamePlay: false };
     case START_BUILDER: return {...state, phase: 'builder', isGamePlay: false};
+    case TAKE_SCORE: return {...state, score: state.score + payload};
     // case EXIT_FROM_GAME: return {...state, phase: 'main', isGamePlay: false};
+    case SAVE_DISPATCH: return {...state, dispatch: payload};
 
     default: return state;
   }
@@ -51,10 +56,11 @@ export const initialState = {
   isGamePlay: false,
   gameVersion: 0,
   score: 0,
+  dispatch: empty,
   menuLines : [
-    {title: 'GAME 1',  linkAction: gameOne},
-    {title: 'GAME 2',  linkAction: gameTwo},
-    {title: 'GAME 3',  linkAction: gameThree},
+    {title: 'GAME 1',  linkAction: _ => gameOne(0)},
+    {title: 'GAME 2',  linkAction: _ => gameOne(1)},
+    {title: 'GAME 3',  linkAction: _ => gameOne(2)},
     {title: 'BUILDER', linkAction: startBuilder},
     {title: 'EXIT',    linkAction: exitFromGame},
   ],

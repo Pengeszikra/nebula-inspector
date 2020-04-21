@@ -1,6 +1,7 @@
-import { take, call } from 'redux-saga/effects';
-import { GAME_ONE } from '../state-management/gameReducer';
+import { take, call, race, put, select } from 'redux-saga/effects';
+import { GAME_ONE, GAME_TWO, GAME_THREE, takeScore, TAKE_SCORE } from '../state-management/gameReducer';
 import playNebulaInspector from '../../-prepare-to-remove-/playNebulaInspector';
+import { Rectangle } from 'pixi.js';
 
 const dificulties = [
   {fireRate: 0,      gap: 2000, ace: 0,    maxSpeed:  7, paralaxWait:  1000 },
@@ -10,10 +11,14 @@ const dificulties = [
 
 export default function * nebulaGameSaga (gameArea, asset) {
   const [level1, level2, level3] = dificulties;
-
-  const play = playNebulaInspector({}, asset, gameArea, () => {});
-
-  yield take(GAME_ONE);
+  const dispatch = yield select(({dispatch}) => dispatch);
+  const earnScore = point => takeScore(point) |> dispatch;
+  const play = playNebulaInspector({earnScore}, asset, gameArea, () => {});
+  const {payload} = yield take(GAME_ONE);
   gameArea.visible = true;
-  yield call(play, level1);
+  
+  yield call(play, dificulties[payload]);
+  yield call(dispatch, takeScore(500));
+  yield takeScore(777) |> put;
+  
 }

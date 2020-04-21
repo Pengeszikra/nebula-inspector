@@ -2,6 +2,8 @@ import { take, race } from 'redux-saga/effects';
 import animationFrames from 'callbag-animation-frames';
 import { forEach, takeWhile, filter } from '../../utils/callbagCollectors';
 import { ROAD_TO, SPLASH_FADE_OUT, GAME_ONE, GAME_TWO, GAME_THREE, START_BUILDER, EXIT_FROM_GAME } from '../state-management/gameReducer';
+import sheetKeys from '../../setup/sheetKeys';
+import { Sprite } from 'pixi.js';
 
 let scrolling = false;
 
@@ -23,6 +25,15 @@ export default function * mainSaga(mainArea, asset) {
   yield take(SPLASH_FADE_OUT);
   mainArea.visible = true;
   scrolling = true;  
+
+  const title = new Sprite(sheet[sheetKeys.nebulaInspector]);
+  mainArea.addChild(title);
+  title.position.set(120, 50);
+  title.interactive = true;
+  title.buttonMode = true;
+  title.on('pointerup', console.log)
+
+
   yield race([
     take(GAME_ONE),
     take(GAME_TWO),

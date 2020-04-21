@@ -1,7 +1,7 @@
 import { take, put, fork, call, all } from 'redux-saga/effects';
 import { startBuilder, roadTo, splashFadeOut } from './gameReducer';
 import createElements from '../../setup/createElements';
-import { Container } from 'pixi.js';
+import { Container, Rectangle } from 'pixi.js';
 import layersFactory from '../../utils/layersFactory';
 
 import splashSaga from '../saga/splashSaga';
@@ -23,10 +23,9 @@ export function * rootSaga () {
     layer.visible = false;
     stage.addChild(layer);
   };
-  const layersObject = { splashArea, mainArea, gameArea, finishArea, builderArea };
- 
+  
   yield all([
-    fork(roadHandlerSaga, layersObject, asset),
+    fork(roadHandlerSaga, { splashArea, mainArea, gameArea, finishArea, builderArea }, asset),
     fork(splashSaga, splashArea, asset),
     fork(mainSaga, mainArea, asset),
     fork(nebulaGameSaga, gameArea, asset),
