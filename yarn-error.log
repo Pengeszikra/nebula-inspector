@@ -1,8 +1,8 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add ,
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add callbag-take-to-finally
 
 PATH: 
-  C:\Users\penge\AppData\Local\Temp\yarn--1587458439173-0.6373865628097959;F:\penge\nebula-inspector\node_modules\.bin;C:\Users\penge\AppData\Local\Yarn\Data\link\node_modules\.bin;C:\Program Files\libexec\lib\node_modules\npm\bin\node-gyp-bin;C:\Program Files\lib\node_modules\npm\bin\node-gyp-bin;C:\Program Files\nodejs\node_modules\npm\bin\node-gyp-bin;C:\soft\Git\mingw64\bin;C:\soft\Git\usr\bin;C:\Users\penge\bin;C:\Python38\Scripts;C:\Python38;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\soft\Git\cmd;C:\ProgramData\chocolatey\bin;C:\ProgramData\nvm;C:\Program Files\nodejs;C:\Program Files (x86)\Yarn\bin;C:\Users\penge\AppData\Local\Microsoft\WindowsApps;C:\soft\vscode\bin;C:\Users\penge\AppData\Local\Yarn\bin
+  C:\soft\Git\mingw64\bin;C:\soft\Git\usr\bin;C:\Users\penge\bin;C:\Python38\Scripts;C:\Python38;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\soft\Git\cmd;C:\ProgramData\chocolatey\bin;C:\ProgramData\nvm;C:\Program Files\nodejs;C:\Program Files (x86)\Yarn\bin;C:\Users\penge\AppData\Local\Microsoft\WindowsApps;C:\soft\vscode\bin;C:\Users\penge\AppData\Local\Yarn\bin
 
 Yarn version: 
   1.22.0
@@ -14,7 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/,: Not found
+  Error: https://registry.yarnpkg.com/callbag-take-to-finally: Not found
       at Request.params.callback [as _callback] (C:\Program Files (x86)\Yarn\lib\cli.js:66084:18)
       at Request.self.callback (C:\Program Files (x86)\Yarn\lib\cli.js:140727:22)
       at Request.emit (events.js:315:20)

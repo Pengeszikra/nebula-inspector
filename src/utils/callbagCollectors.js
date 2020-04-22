@@ -11,7 +11,7 @@ import fromPromise from "callbag-from-promise";
 import wait from "callbag-wait";
 import duration from "callbag-duration-progress";
 import delay from "callbag-delay";
-import takeToFinally from "./takeToFinally";
+import takeToFinally from "callbag-take-to-finally";
 
 export {  
   fromIter, forEach, take, merge, map, filter,

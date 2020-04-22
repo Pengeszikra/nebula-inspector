@@ -51,6 +51,7 @@
     "callbag-last": "^1.1.4",
     "callbag-merge-with": "^1.0.3",
     "callbag-sample": "^2.0.0",
+    "callbag-take-to-finally": "^0.2.0",
     "callbag-take-while": "^2.0.0",
     "callbag-timer": "^1.0.0",
     "callbag-wait": "^2.1.0",
