@@ -20,6 +20,7 @@ export const [ASSET_READY, assetReady] = actionCreator('asset-ready');
 export const [ROAD_TO, roadTo] = actionCreator('road-to');
 
 export default (state, {type, payload}) => {
+  // console.log(type, payload)
   switch (type) {
     case ASSET_READY: return {...state, isAssetReady: true};
     case SPLASH_FADE_OUT: return {...state, phase: 'main', isGamePlay: false };

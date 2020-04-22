@@ -133,15 +133,13 @@ const fireSetup = (state, asset, areas) => ({position:{x,y}}) => {
   const explode = explodeSetup(state, asset, areas);
   const {earnScore} = state;
 
-  console.log(earnScore + [])
-
   function * flyingRocket(speed) {
     while(rocket.position.x < 850) {
       rocket.position.x += speed;
       for (let invader of invaderArea.children) {
         if (rocket.containsPoint(invader.position)) {
           explode(invader, 0.5);
-          earnScore(10);
+          earnScore(50);
           invader.destroy();
         }
       }

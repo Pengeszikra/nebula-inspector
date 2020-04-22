@@ -11,12 +11,13 @@ import fromPromise from "callbag-from-promise";
 import wait from "callbag-wait";
 import duration from "callbag-duration-progress";
 import delay from "callbag-delay";
+import takeToFinally from "./takeToFinally";
 
 export {  
   fromIter, forEach, take, merge, map, filter,
   sample, interval, fromEvent, mergeWith, takeWhile,
   debounce, animationFrames, fromFunction, fromPromise,
-  wait, duration, delay, 
+  wait, duration, delay, takeToFinally,
 }
 
 export const empty = () => {};
