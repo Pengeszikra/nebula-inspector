@@ -4,13 +4,15 @@ import {
   fromIter, forEach, take, merge, map, filter, 
   sample, interval, fromEvent, mergeWith, takeWhile,
   debounce, animationFrames, fromFunction, fromPromise,
-  story, wait
+  story, wait, empty
 } from "./../utils/callbagCollectors";
 import addSprite, { centerPivot } from "./../utils/addSprite";
 import { allInvaders, allShape } from "../setup/sheetSets";
 import sheetKeys from "../setup/sheetKeys";
+import layersFactory from "../utils/layersFactory";
+import { roadTo } from "../react-section/state-management/gameReducer";
 
-const toolSetup = (state, asset, areas, backToMain, stillWorking) => {
+const toolSetup = (emitter, asset, areas, stillWorking) => {
   const {stage, layer1, layer2, layer3} = areas;
   const {sheet} = asset;
 
@@ -62,7 +64,7 @@ const toolSetup = (state, asset, areas, backToMain, stillWorking) => {
         tool.interactive = false;
         stage.interactive = false;
         stage.visible = false;
-        backToMain();
+        roadTo('main') |> emitter;
         ;break;
     }
   })
@@ -70,7 +72,7 @@ const toolSetup = (state, asset, areas, backToMain, stillWorking) => {
   return tool;
 }
 
-export default (state, asset, stage, backToMain) => ({gap, ...config}) => {  
+export default (emitter, asset, stage, {gap, ...config}) => {  
   const { newGalaxy } = asset;
   const galaxy = newGalaxy();
   galaxy.alpha = 3;
@@ -78,27 +80,23 @@ export default (state, asset, stage, backToMain) => ({gap, ...config}) => {
   stage.visible = true;
   stage.addChild(galaxy);
 
-  const layer1 = new Container();
-  const layer2 = new Container();
-  const invaderArea = new Container(); 
-  const buletArea = new Container();
-  const rocketArea = new Container();
-  const layer3 = new Container();
-  const explodingArea = new Container();
-
-  stage.addChild(buletArea, invaderArea,  rocketArea,  explodingArea, layer1, layer2, layer3);
+  const layers = layersFactory(7);
+  const [layer1, layer2, invaderArea, buletArea, rocketArea, layer3, explodingArea] = layers;
+  stage.addChild(...layers);
   
   const areas = {stage, buletArea, invaderArea, rocketArea, explodingArea, layer1, layer2, layer3};
 
   let stillWorking = () => stage.position.x === 0;
   
-  const ship = toolSetup(state, asset, areas, backToMain, stillWorking);
+  const ship = toolSetup(emitter, asset, areas, stillWorking);
  
   const scroll = time => {
-    galaxy.tilePosition.set(- time / 30, 0)
-    
+    galaxy.tilePosition.set(- time / 30, 0)    
   };
+  
   animationFrames 
     |> takeWhile(stillWorking)
     |> forEach(scroll);
+
+  return empty;
 };

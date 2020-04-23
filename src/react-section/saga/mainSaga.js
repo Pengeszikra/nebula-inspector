@@ -33,7 +33,6 @@ export default function * mainSaga(mainArea, asset) {
   title.buttonMode = true;
   title.on('pointerup', console.log)
 
-
   yield race([
     take(GAME_ONE),
     take(GAME_TWO),
@@ -42,5 +41,6 @@ export default function * mainSaga(mainArea, asset) {
     take(EXIT_FROM_GAME),
   ]);
   
+  title.position.y = -1000;
   scrolling = false;
 }
