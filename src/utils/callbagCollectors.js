@@ -36,8 +36,3 @@ export const story = generator => animationFrames
   |> sample(fromIter(generator))
   |> takeWhile(isMoving => isMoving)
   |> forEach(_ => {});
-
-export const storyWhile = (until = _ => true) => generator => animationFrames
-  |> sample(fromIter(generator))
-  |> takeWhile(isMoving => isMoving && until)
-  |> forEach(_ => {});

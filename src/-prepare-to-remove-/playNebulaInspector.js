@@ -10,8 +10,9 @@ import sheetKeys from "../setup/sheetKeys";
 import { allInvaders, enviroment } from "../setup/sheetSets";
 import { easeInOutQuad, easeInOutQuint } from "../utils/easing";
 import { AdjustmentFilter } from '@pixi/filter-adjustment';
-import { story, storyWhile } from "../utils/callbagCollectors";
+import { story } from "../utils/callbagCollectors";
 import layersFactory from "../utils/layersFactory";
+import { takeScore } from "../react-section/state-management/gameReducer";
 
 function * mantaGoingToDie (manta, explode) {
   manta.tint = 0xAA0000;        
@@ -211,8 +212,12 @@ const galaxyFadeIn = (stage, newGalaxy) => {
   return galaxy;
 };
 
-export default (state, asset, stage, backToMain) => ({gap, paralaxWait, ...config}) => {  
+export default (emitter, asset, stage, {gap, paralaxWait, ...config}) => {  
   const { newGalaxy } = asset;
+
+  const state = {
+    earnScore: point => point |> takeScore |> emitter,
+  }
    
   const galaxy = galaxyFadeIn(stage, newGalaxy);
 
@@ -314,6 +319,7 @@ export default (state, asset, stage, backToMain) => ({gap, paralaxWait, ...confi
     }
   );
 
+  /*
   function * handleFinish () {
     while (stillPlay()) {
       yield true;
@@ -326,4 +332,11 @@ export default (state, asset, stage, backToMain) => ({gap, paralaxWait, ...confi
   }
 
   story(handleFinish())  
+  */
+
+  const finish = () => {
+    console.log('- finish game play -')
+  };
+
+  return finish;
 }

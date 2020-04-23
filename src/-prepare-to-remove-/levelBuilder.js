@@ -33,7 +33,6 @@ const toolSetup = (state, asset, areas, backToMain, stillWorking) => {
 
   const toolDown = layer => {
     const {x, y} = tool;
-    console.log(layer, x, y);
     const copy = addSprite(layer, true)(sheet[toolTexture], x, y, zoom);
   };
   
@@ -48,7 +47,6 @@ const toolSetup = (state, asset, areas, backToMain, stillWorking) => {
   tool.on('pointerdown', () => toolDown(layer3) )
 
   fromEvent(document, 'keydown') |> takeWhile(stillWorking) |> forEach( ({key}) => {
-    console.log(key)
     switch(key) {
       case '+': return setTool(Math.min(index + 1, allShape.length), zoom);
       case '-': return setTool(Math.max(index - 1, 0), zoom);
@@ -60,7 +58,6 @@ const toolSetup = (state, asset, areas, backToMain, stillWorking) => {
       case 'z': return layer3.removeChildren(layer3.children.length - 1);
       case ' ': return toolDown(layer3);
       case 'Escape': 
-        console.log('end of building')
         stage.position.set(-10000,-20000);
         tool.interactive = false;
         stage.interactive = false;
