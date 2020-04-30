@@ -14,7 +14,7 @@
     "pixijs",
     "spaceshooter"
   ],
-  "author": "pengeszikra@gmail.com",
+  "author": "Peter Vivo <pengeszikra@gmail.com> (https://github.com/Pengeszikra)",  
   "license": "MIT",
   "staticFiles": {
     "staticPath": [
